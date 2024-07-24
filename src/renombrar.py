@@ -5,6 +5,7 @@ from decouple import config
 import os
 import re
 
+    
 def rename_files(folder_path):
     # Obtener la lista de archivos en el directorio
     files = os.listdir(folder_path)
@@ -34,7 +35,31 @@ def rename_files(folder_path):
             os.rename(old_path, new_path)
             print(f"Renaming: {file} -> {new_name}")
 
-# Ejemplo de uso:
+
+# Config file:
 if __name__ == "__main__":
-    folder_path = config('FILE_TO_RENAME')  # La ruta se encuentra en el archivo .env
+    default_folder = os.path.join(os.path.dirname(__file__), '0files_rename')
+
+    while True:
+        print("Seleccione una opción para elegir la carpeta:")
+        print("1. Carpeta por defecto (0files_rename)")
+        print("2. Nombre de carpeta dentro del proyecto")
+        print("3. Ruta completa en tu PC")
+
+        choice = input("Ingrese el número de opción (1, 2, o 3): ").strip()
+
+        if choice == '1':
+            folder_path = default_folder
+            break
+        elif choice == '2':
+            folder_name = input(f'Seleccionar ruta: {os.getcwd()}\ ').strip()
+            folder_path = folder_name
+            break
+        elif choice == '3':
+            folder_path = input("Ingrese la ruta completa de la carpeta: ").strip()
+            break
+        else:
+            print("Opción no válida. Por favor, ingrese 1, 2 o 3.")
+
+    print(f"Usando la carpeta: {folder_path}")
     rename_files(folder_path)

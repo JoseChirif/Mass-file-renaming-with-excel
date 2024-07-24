@@ -5,7 +5,7 @@ It takes the values  that follow the thid underscore, and move it next the first
 Ex:
 - Sample_1_2_3_4.jpg to Sample_3_4_1_2.jpg
 
-**The files must be in the folder "imagenes" in the same project**
+**The default folder is "0files_rename" and must be in the same project**
 
 
 ## PYTHON PROJECT:
