@@ -7,7 +7,7 @@ from decouple import config  # Para importar variables de .env
 
 
 # Importo funciones a usar
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Agrega el directorio donde se organiza el proyecto (incluyendo funciones)
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Me dirije al directorio del proyecto
 from functions.functions import directorio_a_trabajar, mostrar_error, mostrar_mensaje
 
 # Importo y declaro las variables de .env

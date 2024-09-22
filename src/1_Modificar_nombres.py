@@ -6,8 +6,8 @@ import numpy as np
 from decouple import config  # Para importar variables de .env
 
 # Importo funciones a usar
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Agrega el directorio donde se organiza el proyecto (incluyendo funciones)
-from functions.functions import directorio_a_trabajar, mostrar_error, mostrar_mensaje, mostrar_opciones, desbloquear_protección_excel, copiar_archivos_con_nuevo_nombre, renombrar_archivos_local  # Me da el directorio donde trabajaré
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Me dirije al directorio del proyecto
+from functions.functions import directorio_a_trabajar, mostrar_error, mostrar_mensaje, mostrar_opciones, desbloquear_protección_excel, copiar_archivos_con_nuevo_nombre, renombrar_archivos_local,ejecutar_script_0_Importar_archivos_a_excel 
 
 # Importo y declaro las variables de .env
 archivo_excel = config('NOMBRE_ARCHIVO_EXCEL')
@@ -19,6 +19,7 @@ nombre_carpeta_destino = config("CARPETA_DESTINO")
 #Declaro varaibles tipo lista
 # Nombres de archivos a excluir
 archivos_excluir = [
+    "system32",
     archivo_excel, #Para que no se renombre el excel que estamos utilizando
     nombre_carpeta_destino, #Para evitar un bucle que se vaya copiando el contenido dentro cada que ejecuto
     os.path.basename(os.getcwd()), #Obtiene la carpeta del proyecto (si estas en Python)
@@ -57,7 +58,8 @@ if not os.path.exists(archivo_excel_ruta):
     mostrar_error(mensaje_error)
 
     # Corre el script src/0 Importar archivos a excel.py
-    os.system("Python src/0_Importar_archivos_a_excel.py")
+    ejecutar_script_0_Importar_archivos_a_excel()
+    
     
     # Corto la ejecución
     sys.exit()
@@ -110,7 +112,7 @@ else:
     
     # Verifico si hay nombres para modificar. Si no hay, muestró mensaje de error y cierro el programa.
     if df.loc[:, columna_nombre_nuevo_excel_inicial].isnull().all() or (df.loc[:, columna_nombre_nuevo_excel_inicial] == "").all():
-        mostrar_error(f"La columna {columna_nombre_nuevo_excel_inicial} esta vacía. \n Llenarla para modificar los nombres.")
+        mostrar_error(f"La columna {columna_nombre_nuevo_excel_inicial} en el excel esta vacía. \nLlenarla para modificar los nombres.")
         sys.exit()
 
    

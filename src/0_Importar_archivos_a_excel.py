@@ -7,8 +7,8 @@ from openpyxl.styles import Font, Protection
 from decouple import config # Para importarvariables de .env 
 
 # Importo funciones a usar
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Agrega el directorio donde se organiza el proyecto (incluyendo funciones)
-from functions.functions import directorio_a_trabajar, preguntar_reemplazo, mostrar_mensaje, mostrar_error, modificar_excel_dataframe  # Me da el directorio donde trabajaré
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Me dirije al directorio del proyecto
+from functions.functions import directorio_a_trabajar, preguntar_reemplazo, mostrar_mensaje, mostrar_error, modificar_excel_dataframe 
 
 
 # Importo y declaro las variables de .env
@@ -21,6 +21,7 @@ nombre_carpeta_destino = config("CARPETA_DESTINO") # Para poner en las notas del
 #Declaro varaibles tipo lista
 # Nombres de archivos a excluir
 archivos_excluir = [
+    "system32",
     nombre_archivo_excel_base,
     nombre_carpeta_destino, #Para evitar un bucle que se vaya copiando el contenido dentro cada que ejecuto
     os.path.basename(__file__) # Obtiene el nombre del archivo actual
