@@ -6,9 +6,14 @@ from tkinter import messagebox
 from openpyxl import load_workbook
 from openpyxl.styles import Font, Protection
 import sys
-import threading
+import subprocess
 import shutil
+import webbrowser
 
+
+
+
+## FUNCIONES QUE USARE EN MIS SCRIPTS
 #Obtner el direrctorio (utilizar directorio padre para crear el ejecutable, sino marcara error)
 def directorio_a_trabajar():
     """
@@ -116,35 +121,63 @@ def desbloquear_protección_excel(nombre_archivo_excel_ruta):
     wb.save(nombre_archivo_excel_ruta)
     wb.close()
     
+  
+# Función para obtener el icono
+def obtener_icono():
+    """
+    Esta función añade el icono a las ventanas de tkinter.
+    """
+    # Voy al directorio raíz del proyecto
+    sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
+    # Obtengo el icono
+    icon = "icon/icon.ico"
+    # Agregar el icono a la ventana
+    icon = ventana.iconbitmap(icon)
+    
+    return icon
+      
+
     
     
-# Función para seleccionar una de 2 opciones:
+# Función para cancelar la operación
+def cancelar_operacion():
+    """
+    Esta función cancela la operación y cierra la ventana principal.
+    """
+    global ventana
+    # Variable global para la ventana
+    ventana = None
+    
+    if ventana:
+        ventana.destroy()  # Cierra la ventana principal
+    sys.exit()  # Detener la ejecución del programa
+    
+
+
+# Función para seleccionar una de 2 opciones
 def mostrar_opciones(titulo, opcion1, opcion2, borde1, borde2):
     """
     Esta función brinda 2 opciones, cada una en un botón con el borde asignado (borde1 y borde2 respectivamente).
-    Al final de con la sub-funsión seleccionar_opcion() devuelve nro 1 ó 2 según selección o 'cancelar' si se cancela.
-    
-    Uso: Variable = función()
-    print(Uso)
+    Al final, con la sub-función seleccionar_opcion() devuelve nro 1 ó 2 según la selección o 'cancelar' si se cancela.
     """
     def seleccionar_opcion(nro_opcion):
-        """Sub-función para brindar el nro de opcion"""
+        """Sub-función para brindar el nro de opción"""
         nonlocal resultado
         resultado = nro_opcion
         ventana.quit()  # Cerrar la ventana
 
-    def cancelar():
-        """Sub-función para manejar la cancelación"""
-        ventana.destroy()  # Cierra la aplicación
-
+    global ventana
     ventana = tk.Tk()
     ventana.title(titulo)  # Establecer el título de la ventana
+    
+    # Agregar el icono a la ventana
+    obtener_icono()
 
     # Variable para almacenar el resultado
     resultado = None
 
     # Botón de cerrar (X)
-    ventana.protocol("WM_DELETE_WINDOW", cancelar)
+    ventana.protocol("WM_DELETE_WINDOW", cancelar_operacion)
 
     # Marco para la primera opción
     frame1 = tk.Frame(ventana, highlightbackground=borde1, highlightthickness=2)
@@ -167,7 +200,7 @@ def mostrar_opciones(titulo, opcion1, opcion2, borde1, borde2):
     boton2.pack()
 
     # Botón de cancelar
-    boton_cancelar = tk.Button(ventana, text="Cancelar", command=cancelar, 
+    boton_cancelar = tk.Button(ventana, text="Cancelar", command=cancelar_operacion, 
                                 padx=10, pady=5, bg="red", fg="white")
     boton_cancelar.pack(side=tk.BOTTOM, anchor=tk.SE, padx=10, pady=10)  # Esquina inferior derecha
 
@@ -309,6 +342,56 @@ def renombrar_archivos_local(DataFrame_a_procesar, directorio, columna_original,
     DataFrame_a_procesar['Estado'] = estado
 
     return DataFrame_a_procesar
+
+
+# Función para abrir Google
+def abrir_github(event):
+    webbrowser.open("https://github.com/JoseChirif/Renombrar-archivos-masivamente")
+
+
+
+
+
+## FUNCIONES PARA CORRER SCRIPTS
+# Obtener la ruta absoluta del directorio actual
+
+
+
+def ejecutar_script_0_Importar_archivos_a_excel():
+    """
+    Ejecuta el script 0_Importar_archivos_a_excel.py ubicado en la carpeta src.
+    """
+    # Voy al directorio raíz del proyecto
+    sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
+    # Pruebo ejecutar el script
+    try:
+        os.system("Python src/0_Importar_archivos_a_excel.py")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar script 0_Importar_archivos_a_excel: {e}")
+
+def ejecutar_script_1_Modificar_nombres():
+    """
+    Ejecuta el script 1_Modificar_nombres.py ubicado en la carpeta src.
+    """
+    # Voy al directorio raíz del proyecto
+    sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
+    # Pruebo ejecutar el script
+    try:
+        os.system("Python src/1_Modificar_nombres.py")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar script 1_Modificar_nombres: {e}")
+
+def ejecutar_script_2_Desbloquear_excel():
+    """
+    Ejecuta el script 2_Desbloquear_excel.py ubicado en la carpeta src.
+    """
+    # Voy al directorio raíz del proyecto
+    sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
+    # Pruebo ejecutar el script
+    try:
+        os.system("Python src/2_Desbloquear_excel.py")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar script 2_Desbloquear_excel: {e}")
 
         
 #test    
