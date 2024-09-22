@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\carlo\OneDrive\Trabajo\00 Portafolio\Python automatizacion\Nueva carpeta (3)\Renombrar archivos\venv"
+VIRTUAL_ENV="C:\Users\carlo\OneDrive\Trabajo\00 Portafolio\Python automatizacion\Renombrar archivos masivo\Renombrar archivos masivo - proyecto\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
