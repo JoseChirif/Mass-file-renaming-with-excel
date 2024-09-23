@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import sys
 import os
+import subprocess
 from PIL import Image, ImageTk
 
 
@@ -103,25 +104,48 @@ def menu_principal():
     lbl_notas = tk.Label(ventana, text=notas, font=("Arial", 10), justify="left", bg="white", anchor="w")
     lbl_notas.pack(padx=margen_izquierdo, anchor="w")
 
+
+    ## LINK AL REPOSITORIO Y LICENCIA
     # Agregar espacio en blanco
     tk.Label(ventana, text="", bg="white").pack(pady=2)
     
 
-    # Cargar la imagen de link a github
+   # Crear un frame para alinear la imagen y la licencia
+    frame = tk.Frame(ventana, bg="white")
+    frame.pack(pady=10)
+
+    # Cargar la imagen de link a GitHub
     img_Link_repositorio = Image.open("icon/Link_repositorio.jpg")
     img_Link_repositorio = img_Link_repositorio.resize((95, 50), Image.LANCZOS)
     imagen_Link_repositorio_tk = ImageTk.PhotoImage(img_Link_repositorio)
 
     # Etiqueta para la imagen de Link_repositorio
-    lbl_imagen_Link_repositorio = tk.Label(ventana, image=imagen_Link_repositorio_tk, bg="white", cursor="hand2")  # Cursor como mano
-    lbl_imagen_Link_repositorio.image = imagen_Link_repositorio_tk  # Mantener una referencia para evitar que se elimine
-    lbl_imagen_Link_repositorio.pack(pady=10)  # Puedes ajustar el padding según sea necesario
+    lbl_imagen_Link_repositorio = tk.Label(frame, image=imagen_Link_repositorio_tk, bg="white", cursor="hand2")  # Cursor como mano
+    lbl_imagen_Link_repositorio.image = imagen_Link_repositorio_tk  
+    lbl_imagen_Link_repositorio.pack(side=tk.LEFT, padx=(0, 10))  # Agrega un poco de padding a la derecha
 
-    # Vínculo a Google
-    lbl_imagen_Link_repositorio.bind("<Button-1>", abrir_github)
-    
+    # Vínculo al repositorio
+    lbl_imagen_Link_repositorio.bind("<Button-1>", lambda e: abrir_github) 
+
+
+    ## LICENCIA
+    def obtener_ruta_license():
+        # Obtiene la ruta completa al archivo LICENSE.txt en el directorio padre
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'LICENSE.txt'))
+    # Función para leer licencia
+    def leer_license():
+        # Abre LICENSE.txt en el Bloc de notas
+        ruta_license = obtener_ruta_license()
+        subprocess.Popen(['notepad.exe', ruta_license])
+
+    # Mostrar "MIT License"
+    lbl_licencia = tk.Label(frame, text="MIT License", bg="white", cursor="hand2")
+    lbl_licencia.pack(side=tk.RIGHT, padx=(100, 0), pady=(30, 0))
+
+    # Llamar a leer_license al hacer clic
+    lbl_licencia.bind("<Button-1>", lambda e: leer_license())
+
     ventana.mainloop()
-    
 
 
 # Llamada para crear la interfaz gráfica
