@@ -344,7 +344,8 @@ def renombrar_archivos_local(DataFrame_a_procesar, directorio, columna_original,
     return DataFrame_a_procesar
 
 
-# Función para abrir Google
+## FUNCIONES PARA MENU PRINCIPAL
+# Función para abrir el repositorio
 def abrir_github(event):
     webbrowser.open("https://github.com/JoseChirif/Renombrar-archivos-masivamente")
 
