@@ -1,10 +1,10 @@
-# MASS FILE RENAMING 
+# Renombrar archivos en masa
 ¡Renombrar múltiples archivos es tan facil como editar un excel!
 ![gif_resume](https://github.com/user-attachments/assets/1f7a9477-ddc0-4e3f-a747-4d48567e4b85)
 
 
 
-# Start the program:
+# Iniciar el programa:
 - [Ejecutar desde python (click aquí)](#ejecutar-desde-python)
 
 - [Ejecutar desde un archivo .exe (click aquí)](#ejecutar-desde-un-archivo-exe )
