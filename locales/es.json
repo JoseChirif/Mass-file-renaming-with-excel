@@ -1,0 +1,86 @@
+{
+    "_JSON_COMMENT1_":"__TEXTOS DEL MENÚ PRINCIPAL__",
+    "project_title":  "Renombrar archivos masivamente",
+    "language_text": "Idioma: ",
+    "select_an_option_text":  "Seleccione una opción:",
+    "text_button_1":  "1. Crear Excel con los nombres de los archivos en esta carpeta.",
+    "text_button_2":  "2. Modificar nombres con la plantilla excel.",
+    "text_button_3":  "Desbloquear hoja excel (opcional).",
+    "notes_title": "Notas: ",
+    "notes_content":  "- Se recomienda trabajar dentro de una carpeta creada. \n- No trabajar directamente sobre el escritorio o disco duro (Ej: C, D). \n- El usuario es responsable de los archivos que modifica. \n- El nombre del archivo excel se debe mantener tal cual se llama el archivo ejecutable, para que pueda leerlo al momento de modificar nombres.",
+
+
+    "_JSON_COMMENT2_": "__NOMBRES COLUMNAS PLANTILLA EXCEL__",
+    "excel_column_original_name": "Nombre Original",
+    "excel_column_extention": "Extensión del archivo",
+    "excel_column_new_name": "Nombre Nuevo",
+    "excel_column_original_name_final": "Nombre Original Completo",
+    "excel_column_new_name_final": "Nombre Nuevo Completo",
+    "excel_column_status": "Estado",
+    "excel_column_error": "Errores",
+
+    "_JSON_COMMENT3_": "__ERRORES DF Y EXCEL__",
+    "excel_error_column_new_names_empty": "La columna C ('{excel_column_new_name}') en el excel esta vacía. \nLlenarla para modificar los nombres.",
+    "excel_error_file_not_found": "Archivo o carpeta no encontrado: ",
+    "excel_error_file_already_proceced": "El archivo '{excel_column_new_name_final}' ya fue procesado previamente en la tabla.",
+    "excel_error_file_already_exist_in_new_directory": "El archivo '{excel_column_new_name_final}' ya existe en '{folder_with_renamed_files}'.",
+    "excel_error_file_already_exist_in_the_same_folder": "El archivo '{excel_column_new_name_final}' ya existe en la carpeta actual.",
+    "excel_error_files_not_found": "No se encontro ningún archivo descrito en la columna 'A' del excel. \n",
+    "excel_error_conflic": "No se proceso '{excel_column_new_name_final}' para evitar cualquier conflicto.",
+    "excel_errors_log_message": "Algunos archivos no fueron procesados. \n La lista de {excel_column_error} se guardo en ",
+    "excel_template_error_not_found": "Error: Archivo no encontrado ({excel_name})",
+    "excel_template_error_not_allowed": "Error: Permiso denegado al acceder a '{excel_name}'. \n Cerrar si el archivo está abierto.",
+
+
+
+
+    "_JSON_COMMENT4_": "__NOTAS EN PLANTILLA EXCEL__",
+    "excel_note1": " - La columna C ({excel_column_new_name}) NO requiere extensión (Ej: .jpg .png ...), se respetarán las extensiones de la columna B.",
+    "excel_note2": " - Si deseas mantener el nombre original, deja la celda de la columna C ({excel_column_new_name}) en blanco.",
+    "excel_note3": " - Mantener la estructura del Excel (No modificar las celdas A1, B1 y C1; ni insertar columnas antes de la columna C).",
+    "excel_note4": " - No incluir el ejecutable que modifica nombres ({project_name}) ni la carpeta '{folder_with_renamed_files}' (donde opcionalmente se almacenan las modificaciones). Y en caso estes ejecutando desde la carpeta con Python, no incluir la misma carpeta del proyecto.",
+    "excel_note5": " - Si deseas desbloquear el excel, el programa tiene la opción de hacerlo (3er botón). Si deseas desbloquearlo directamente, no tiene contraseña.",
+
+    "_JSON_COMMENT5_": "__TEXTOS PARA SCRIPTS__",
+    "renamed": "renombrado",
+    "instructions_title": "Instrucciones",
+
+
+
+    "_JSON_COMMENT6_": "__MENSAJES PARA USUARIO (TKINTER)__",
+    "file_created_title": "Archivo creado",
+    "file_created_message": "Plantilla guardada en '{excel_name}'. \n \nNo modifique los encabezados de la celda A1:C1, No mueva las columnas A:C, no inserte columnas antes de la columna C y manten el nombre del excel como el programa que estas ejecutando.",
+    "file_not_created_selected_title": "Archivo no creado",
+    "file_not_created_selected_message": "Usted selecciono no reemplazar el archivo existente.",
+    "file_replaced_title": "Archivo reemplazado",
+    "file_replaced_message": "El archivo '{excel_name}' se reemplazo satisfactoriamente.",
+    "success_title": "Éxito",
+    "success_message": "Los archivos fueron guardados correctamente en la carpeta {folder_with_renamed_files}.",
+    "unlocked_title": "Desbloqueado",
+    "unlocked_message": "El excel fue desbloquado satisfactoriamente. \n \nMantenga la estructura de las columnas 'A', 'B' y 'C' y mantenga el nombre del excel como este programa.",
+    "file_already_exist_title": "Archivo existente",
+    "file_already_exist_message": "El archivo '{excel_name}' ya existe. ¿Deseas reemplazarlo?",
+    "cancel_title": "Cancelar",
+    "start_function_title": "Reemplazar archivos",
+    "start_function_message": "¿Deseas reemplazar los archivos originales? \nEste proceso no se puede deshacer.",
+    "operation_canceled_title": "Operación cancelada",
+    "operation_canceled_message": "Seleccionó no reemplazar archivos.",
+
+
+    "_JSON_COMMENT7_": "__MENSAJES ERROR (TKINTER)__",
+    "error_open_file": "Cerrar '{excel_name}' para poder guardar uno nuevo.",
+    "error_excel_not_found": "El excel '{excel_name}' no se encuentra en la carpeta. \n \n Se creará el archivo en la carpeta.",
+    "error_excel_structure_modified": "La estructura debe iniciar como se brindó la plantilla desde la celda 'A1', 'B1' y 'C1', con los encabezados: '{excel_column_original_name}', '{excel_column_extention}' y '{excel_column_new_name}' respectivamente. \n \n Se deshabilitó la protección de hoja en el excel.",
+    "error_excel_open": "Cerrar {excel_name} para poder quitarle la protección de hoja.",
+    "error_unknown": "Error desconocido.",
+
+    
+
+
+    "_JSON_COMMENT8_": "__OPCIONES PARA SCRIPT 1__",
+    "option1": "Crear una nueva carpeta y copiar los archivos con sus nuevos nombres.",
+    "option2": "¡Sobreescribir los archivos con los nuevos nombres!",
+    "error_text": "error"
+
+
+}

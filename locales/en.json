@@ -1,0 +1,86 @@
+{
+    "_JSON_COMMENT1_":"__MAIN MENU TEXTS__",
+    "project_title":  "Mass files renaming",
+    "language_text": "Language: ",
+    "select_an_option_text":  "Select an option:",
+    "text_button_1":  "1. Create an excel with all files in the same folder.",
+    "text_button_2":  "2. Modify files as the excel indicates.",
+    "text_button_3":  "Unlock excel sheet (optional).",
+    "notes_title": "Notes: ",
+    "notes_content":  "- It is recommended to work within a created folder. \n- Do not work directly on the desktop or hard disk (e.g., C, D). \n- The final user is responsible for the files he modifies. \n- The excel file name's must be kept as the executable file is called, so that you can read it when modifying names.",
+
+
+    "_JSON_COMMENT2_": "__NAMES OF COLUMNS OF THE EXCEL FILE__",
+    "excel_column_original_name": "Original Name",
+    "excel_column_extention": "File extension",
+    "excel_column_new_name": "New name",
+    "excel_column_original_name_final": "Original Name Complete",
+    "excel_column_new_name_final": "New name Complete",
+    "excel_column_status": "Status",
+    "excel_column_error": "Errors",
+
+    "_JSON_COMMENT3_": "__ERRORS DF AND EXCEL__",
+    "excel_error_column_new_names_empty": "Column C ('{excel_column_new_name}') in excel is empty. \nFill it in to modify the names.",
+    "excel_error_file_not_found": "File or folder not found: ",
+    "excel_error_file_already_proceced": "The file '{excel_column_new_name_final}' has already been previously processed in table.",
+    "excel_error_file_already_exist_in_new_directory": "The file '{excel_column_new_name_final}' already exists in '{folder_with_renamed_files}'.",
+    "excel_error_file_already_exist_in_the_same_folder": "The file '{excel_column_new_name_final}' already exists in the current folder.",
+    "excel_error_files_not_found": "No file described in column 'A' of the excel was found. \n",
+    "excel_error_conflic": "'{excel_column_new_name_final}' hasn't been processed to avoid any conflict.",
+    "excel_errors_log_message": "Some files were not processed. \n The list of {excel_column_error} was saved in ",
+    "excel_template_error_not_found": "Error: File not found ({excel_name})",
+    "excel_template_error_not_allowed": "Error: Permission denied while accessing to '{excel_name}'. \n Close if the file is open.",
+
+
+
+
+    "_JSON_COMMENT4_": "__EXCEL NOTES__",
+    "excel_note1": " - Column C ({excel_column_new_name}) does NOT require an extension (e.g. .jpg .png ...), the extensions of column B will be respected.",
+    "excel_note2": " - If you want to keep the original name, leave the cell in column C ({excel_column_new_name}) empty.",
+    "excel_note3": " - Maintain the Excel structure (Do not modify cells A1, B1 and C1. Don't insert columns before column C).",
+    "excel_note4": " - Do not include the executable that modifies names ({project_name}) nor the folder '{folder_with_renamed_files}' either (where optionally the modifications are stored). In case you are running from the Python folder, do not include the project folder itself.",
+    "excel_note5": " - If you want to unlock excel, the program has the option to do it (3rd button). If you want to unlock it directly, there is no password.",
+
+    "_JSON_COMMENT5_": "__SCRIPTS' TEXTS__",
+    "renamed": "renamed",
+    "instructions_title": "Instructions",
+
+
+
+    "_JSON_COMMENT6_": "__MESSAGES TO THE USER (TKINTER)__",
+    "file_created_title": "File created",
+    "file_created_message": "Template saved in '{excel_name}'. \n \nDon't modify cell headers A1:C1, do not move columns A to C, do not insert any column before column C and keep the excel name as the executable program.",
+    "file_not_created_selected_title": "File not created",
+    "file_not_created_selected_message": "You selected not to replace the existing file.",
+    "file_replaced_title": "Replaced file",
+    "file_replaced_message": "The file '{excel_name}' was successfully replaced.",
+    "success_title": "Successful operation",
+    "success_message": "The files were saved correctly in the folder  {folder_with_renamed_files}.",
+    "unlocked_title": "Unloked",
+    "unlocked_message": "The excel was unlocked successfully. \n \nKeep the structure of columns 'A', 'B' and 'C' and keep the name of the excel as this program.",
+    "file_already_exist_title": "Existing file",
+    "file_already_exist_message": "The file '{excel_name}' already exists, do you want to replace it?",
+    "cancel_title": "Cancel",
+    "start_function_title": "Replace files",
+    "start_function_message": "Do you want to replace the original files? \nThis process cannot be undone.",
+    "operation_canceled_title": "Operation canceled",
+    "operation_canceled_message": "You selected not to replace files.",
+
+
+    "_JSON_COMMENT7_": "__ERROR MESSAGES (TKINTER)__",
+    "error_open_file": "Close '{excel_name}' to save a new one.",
+    "error_excel_not_found": "The excel '{excel_name}' hasnnot been found in the folder.  \n \n The file will be created in the folder.",
+    "error_excel_structure_modified": "The structure should start as provided in the template from cell 'A1', 'B1' and 'C1', with the headers: '{excel_column_original_name}', '{excel_column_extention}' and '{excel_column_new_name}' respectively. \n \n Sheet protection has been disabled in excel.",
+    "error_excel_open": "Close {excel_name} to be able to remove the sheet protection.",
+    "error_unknown": "Unknown error.",
+
+
+
+
+    "_JSON_COMMENT8_": "__SCRIPT 1 OPTIONS__",
+    "option1": "Create a new folder and copy the files with their new names.",
+    "option2": "Overwrite the files with the new names!",
+    "error_text": "error"
+
+
+}
