@@ -23,7 +23,7 @@ Rename multiple files as easy as modifying an excel file
     **Scripts will modify the name of files in project's parent directory.**
 
 
-[Now go to the program's workflow](program-workflow)
+[Now go to the program's workflow](#program-workflow)
 
 
 
@@ -43,7 +43,7 @@ Rename multiple files as easy as modifying an excel file
 
 
 
-[Now go to the program's workflow](program-workflow)
+[Now go to the program's workflow](#program-workflow)
 
 
 

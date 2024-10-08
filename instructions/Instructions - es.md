@@ -7,7 +7,7 @@
 # Iniciar el programa:
 - [Ejecutar desde python (click aquí)](#ejecutar-desde-python)
 
-- [Ejecutar desde un archivo .exe (click aquí)](#ejecutar-desde-un-archivo-exe )
+- [Ejecutar desde un archivo .exe (click aquí)](#ejecutar-desde-un-archivo-exe)
 
 ## Ejecutar desde python:
 1. Instala un ambiente virtual con el comando `python -m venv venv`
@@ -23,7 +23,7 @@
     **Los scripts modifican los nombres de los archivos en el directorio padre del proyecto.**
 
 
-[Ahora reviza el flujo de trabajo (click aquí)](flujo-de-trabajo)
+[Ahora reviza el flujo de trabajo (click aquí)](#flujo-de-trabajo)
 
 
 
@@ -43,7 +43,7 @@
 
 
 
-[Ahora reviza el flujo de trabajo (click aquí)](flujo-de-trabajo)
+[Ahora reviza el flujo de trabajo (click aquí)](#flujo-de-trabajo)
 
 
 
