@@ -29,7 +29,7 @@
 
 
 
-## Ejecutar desde un archivo exe :
+## Ejecutar desde un archivo exe:
 1. Descarga el archivo .exe de lanzamientos:
     ![releases](https://github.com/user-attachments/assets/479ec700-56e1-4bf9-9d80-77743b8a1fbd)
     ![.exe](https://github.com/user-attachments/assets/57da40c2-41f7-4e71-b459-d785acd136d1)
