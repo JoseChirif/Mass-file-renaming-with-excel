@@ -43,6 +43,7 @@ text_button_2 = traducciones["text_button_2"]
 text_button_3 = traducciones["text_button_3"]
 notes_title = traducciones["notes_title"]
 notes_content = traducciones["notes_content"]
+instructions_text = traducciones["instructions_text"]
     
 
 # Estilos
@@ -53,7 +54,7 @@ ancho_bordes_botones = 2   # Ancho del borde de los botones
 color_borde_botones = "black"  # Color del borde de los botones
 padding_text_button_x = 20  # Padding horizontal entre texto y borde del botón
 padding_text_button_y = 10  # Padding vertical entre texto y borde del botón
-tamano_ventana = "650x600"   # Tamaño personalizado de la ventana (ancho x alto)
+tamano_ventana = "650x650"   # Tamaño personalizado de la ventana (ancho x alto)
 margen = 30        # Margen izquierdo para alinear los textos
 ancho_minimo_ventana = 300
 link_color = "#0770E0"
@@ -79,6 +80,7 @@ def seleccionar_idioma(event):
     text_button_3 = traducciones["text_button_3"]
     notes_title = traducciones["notes_title"]
     notes_content = traducciones["notes_content"]
+    instructions_text = traducciones["instructions_text"]
     # Actualizar los textos en los widgets de la interfaz gráfica
     lbl_project_title.config(text=project_title)
     etiqueta_idiomas.config(text=language_text)
@@ -88,6 +90,7 @@ def seleccionar_idioma(event):
     btn_opcion_3.config(text=text_button_3)
     lbl_project_title_notes_content.config(text=notes_title)
     lbl_notes_content.config(text=notes_content)
+    lbl_instructions.config(text=instructions_text)
 
 
 
@@ -96,7 +99,7 @@ def seleccionar_idioma(event):
 # Función para crear la interfaz gráfica
 def menu_principal():
     global ventana, combo_idiomas # Hacer que 'ventana' y combo_idiomas sea global
-    global lbl_project_title, etiqueta_idiomas, lbl_menu, language_text, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content  # Hacer los widgets globales para actualizarlos en seleccionar_idioma.
+    global lbl_project_title, etiqueta_idiomas, lbl_menu, language_text, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content, lbl_instructions  # Hacer los widgets globales para actualizarlos en seleccionar_idioma.
     ventana = tk.Tk()
     ventana.title(project_title)
     
@@ -221,7 +224,7 @@ def menu_principal():
     lbl_github_text.pack(side=tk.LEFT, padx=(100, 0), pady=(5, 0))
     
     # Vínculo al repositorio
-    lbl_github_text.bind("<Button-1>", lambda e: open_web_page('https://github.com/JoseChirif/Mass-file-renaming'))
+    lbl_github_text.bind("<Button-1>", lambda e: open_web_page('https://github.com/JoseChirif/Mass-file-renaming-with-excel','https://github.com/JoseChirif?tab=repositories', 'https://github.com/JoseChirif'))
     
     #PNG    
     # Cargar la icon_picture_png de link a GitHub
@@ -235,7 +238,7 @@ def menu_principal():
     lbl_github_logo.pack(side=tk.LEFT, padx=(0, 10))  # Agrega un poco de padding a la derecha
 
     # Vínculo al repositorio
-    lbl_github_logo.bind("<Button-1>", lambda e: open_web_page('https://github.com/JoseChirif/Mass-file-renaming'))
+    lbl_github_logo.bind("<Button-1>", lambda e: open_web_page('https://github.com/JoseChirif/Mass-file-renaming-with-excel','https://github.com/JoseChirif?tab=repositories', 'https://github.com/JoseChirif'))
     
     
 
@@ -263,9 +266,13 @@ def menu_principal():
 
 
 
-    ## README
-    lbl_readme = tk.Label(ventana, text="README", font=("Arial", 7), fg=link_color, cursor="hand2", bg=ventana.cget('bg'))
-    lbl_readme.place(relx=0.0, rely=1.0, anchor="sw", x=margen-10, y=-5)
+    ## Instructions
+    #lbl_instructions = tk.Label(ventana, text=instructions_text, font=("Arial", 9), fg=link_color, cursor="hand2", bg=ventana.cget('bg'))
+    lbl_instructions = tk.Label(ventana, text=instructions_text, font=("Arial", 9, "bold"), fg="black", cursor="hand2", bg=ventana.cget('bg'), relief="raised", bd=2, padx=5, pady=5)
+
+    lbl_instructions.place(relx=0.0, rely=1.0, anchor="sw", x=margen-10, y=-5)
+    # Abrir la pagina de instruciones al hacer click
+    lbl_instructions.bind("<Button-1>", lambda e: open_web_page(f'https://github.com/JoseChirif/Mass-file-renaming-with-excel/tree/main/instructions/Instructions%20-%20{idioma}.md', 'https://github.com/JoseChirif/Mass-file-renaming-with-excel/tree/main/instructions/Instructions%20-%20en.md','https://github.com/JoseChirif/Mass-file-renaming-with-excel','https://github.com/JoseChirif?tab=repositories', 'https://github.com/JoseChirif'))
     
     #### PENDIENTE LINK A README Y UPDATE
     
