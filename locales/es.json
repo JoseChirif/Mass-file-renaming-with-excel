@@ -8,6 +8,7 @@
     "text_button_3":  "Desbloquear hoja excel (opcional).",
     "notes_title": "Notas: ",
     "notes_content":  "- Se recomienda trabajar dentro de una carpeta creada. \n- No trabajar directamente sobre el escritorio o disco duro (Ej: C, D). \n- El usuario es responsable de los archivos que modifica. \n- El nombre del archivo excel se debe mantener tal cual se llama el archivo ejecutable, para que pueda leerlo al momento de modificar nombres.",
+    "instructions_text": "Instrucciones",
 
 
     "_JSON_COMMENT2_": "__NOMBRES COLUMNAS PLANTILLA EXCEL__",

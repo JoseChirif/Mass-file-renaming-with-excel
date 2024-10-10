@@ -9,7 +9,7 @@ import sys
 import shutil
 import webbrowser
 import json
-
+import requests
 
 
 ## FUNCIONES DIRIGIRSE A CARPETAS/DIRECTORIOS
@@ -80,21 +80,36 @@ def cargar_lista_de_lenguajes():
     
     
 def cargar_traducciones(idioma):
-    """_summary_
+    """Carga las traducciones desde un archivo JSON según el idioma especificado.
 
     Args:
-        idioma (_type_): _description_
+        idioma (str): El código del idioma (por ejemplo, 'es' para español).
 
     Returns:
-        _type_: _description_
+        dict: Un diccionario con las traducciones.
     """
     # Obtener el directorio base del proyecto
     directorio_del_proyecto = directorio_proyecto() 
     # Construir la ruta hacia el archivo JSON del idioma
-    ruta_json = os.path.join(directorio_del_proyecto, 'locales', f'{idioma}.json')
-    with open(ruta_json, 'r', encoding='utf-8') as archivo:
-        traducciones = json.load(archivo)
+    ruta_json_idioma = os.path.join(directorio_del_proyecto, 'locales', f'{idioma}.json')
+    ruta_json_en = os.path.join(directorio_del_proyecto, 'locales', 'en.json')
 
+    # Cargar las traducciones del idioma especificado
+    traducciones = {}
+    
+    # Intentar cargar el archivo del idioma
+    if os.path.exists(ruta_json_idioma):
+        with open(ruta_json_idioma, 'r', encoding='utf-8') as archivo:
+            traducciones = json.load(archivo)
+    
+    # Cargar el archivo en.json para valores por defecto
+    with open(ruta_json_en, 'r', encoding='utf-8') as archivo:
+        traducciones_en = json.load(archivo)
+
+    # Reemplazar las traducciones faltantes por las del inglés
+    for clave in traducciones_en:
+        if clave not in traducciones:
+            traducciones[clave] = traducciones_en[clave]
 
     return traducciones
 
@@ -461,8 +476,27 @@ def relative_route_to_file(path_to_folder, file):
 
 ## FUNCIONES PARA MENU PRINCIPAL
 # Función para abrir el repositorio
-def open_web_page(link):
-    webbrowser.open(link)
+def open_web_page(*links):
+    """_summary_
+    """
+    for link in links:
+        try:
+            # Realizar una solicitud GET para seguir redirecciones
+            response = requests.get(link, timeout=5)
+            if response.status_code == 200:
+                webbrowser.open(link)
+                print(f"Abriendo: {link}")
+                break  # Detener el bucle si el enlace fue abierto con éxito
+            else:
+                print(f"El enlace {link} no está disponible, estado: {response.status_code}")
+        except requests.ConnectionError:
+            print(f"Error de conexión al verificar {link}. El enlace puede no existir.")
+        except requests.Timeout:
+            print(f"Tiempo de espera agotado al verificar {link}.")
+        except requests.RequestException as e:
+            print(f"Error al verificar {link}: {e}")
+    else:
+        print("Ningún enlace se pudo abrir.")
 
 
 

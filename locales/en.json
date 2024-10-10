@@ -8,6 +8,7 @@
     "text_button_3":  "Unlock excel sheet (optional).",
     "notes_title": "Notes: ",
     "notes_content":  "- It is recommended to work within a created folder. \n- Do not work directly on the desktop or hard disk (e.g., C, D). \n- The final user is responsible for the files he modifies. \n- The excel file name's must be kept as the executable file is called, so that you can read it when modifying names.",
+    "instructions_text": "Instructions",
 
 
     "_JSON_COMMENT2_": "__NAMES OF COLUMNS OF THE EXCEL FILE__",
