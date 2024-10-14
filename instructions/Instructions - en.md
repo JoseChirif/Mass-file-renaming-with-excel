@@ -4,8 +4,8 @@
     ![move_to_folder](https://github.com/user-attachments/assets/a186ba66-b2f7-452f-8797-4f054907d76f)
 
 
-2. With the main menu open you can run all scripts.
-    ![main menu](https://github.com/user-attachments/assets/9e9d432d-d3e2-4f8a-a4c4-dea361f054b3)
+2. Execute the program to open the main menu.
+    ![Main menu](https://github.com/user-attachments/assets/74ce9fb0-3c13-4362-8180-7c721d530cb4)
 
 3. The first button will create an excel with the name of all files and folders of the folder where it is.
     ![excel template](https://github.com/user-attachments/assets/c43eb533-498d-46a5-87d3-1ab98e0f8348)
@@ -21,6 +21,7 @@
 
 
     You have 2 options:
+    <br>
     ![options to modify names](https://github.com/user-attachments/assets/8d4136fe-5dc2-43c5-875a-fc729e16124d)
     - Option 1: Made a new folder (with the same name as the project) and copy all the files with the new name.
     - Option 2: Overwrite the files with the new names.

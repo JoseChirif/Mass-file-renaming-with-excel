@@ -99,7 +99,7 @@ Generate an automatic excel template with the name of all files in the same fold
     ![move_to_folder](https://github.com/user-attachments/assets/a186ba66-b2f7-452f-8797-4f054907d76f)
 
   2. With the main menu open you can run all scripts.
-    ![main menu](https://github.com/user-attachments/assets/9e9d432d-d3e2-4f8a-a4c4-dea361f054b3)
+    ![Main menu](https://github.com/user-attachments/assets/74ce9fb0-3c13-4362-8180-7c721d530cb4)
 
   3. The first button will create an excel with the name of all files and folders of the folder where it is.
     ![excel template](https://github.com/user-attachments/assets/c43eb533-498d-46a5-87d3-1ab98e0f8348)
