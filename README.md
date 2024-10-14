@@ -18,49 +18,67 @@ Generate an automatic excel template with the name of all files in the same fold
 
 # 🛠️ SETUP
 **Steps to setup the program:**
-  1. Download the last release
-  2. Extract the .rar program
 
-  <br>
+1. Download the last release.rar
 
-  **Then you have 2 options:**
+<table>
+  <tr>
+  <td><img src="https://github.com/user-attachments/assets/b34da49e-b074-4c95-a122-f77645adba06" alt="go to release section" /></td>
+  <td><img src="https://github.com/user-attachments/assets/6f47e0fd-77bd-46be-b62e-c9e666084d09" alt="download the last rar file" /></td>
+  </tr>
+</table>
+
+2. Extract the .rar program
+
+3. Install virtual environment with command `python -m venv venv`
+
+4. Activate the virtual environment with `venv\Scripts\activate`
+
+5. Install dependencies from requirements.txt: `pip install -r requirements.txt` (check that your venv is active).
+
+<br>
+
+**Then you have 2 options:**
   
-  <!-- Option a: Make a .exe file - RECOMMENDED (Click here):START -->
-  <details>
-    <summary>
-      Option a: Make a .exe file - RECOMMENDED (Click here)
-    </summary>
+<!-- Option a: Make a .exe file - RECOMMENDED (Click here):START -->
+<details>
+  <summary>
+    Option a: Make a .exe file - RECOMMENDED (Click here)
+  </summary>
 
-    3. xd
+  <ol start="6">
+    <li>Run: <code>pyinstaller --onefile --windowed --clean --noupx --add-data "assets/*;assets" --add-data "config/*;config" --add-data "functions/*;functions" --add-data "locales/*;locales" --add-data "src/*;src" --add-data "LICENSE.txt;." --add-data "README.md;." --icon "assets/icon.ico" --name "0 rename.exe" run.py</code></li><br>
+    <li>Then the folder dist will be created in the project's folder. Inside is the exe file.
+  </ol>
 
-  </details>
-  <br>
-  <!-- Option a: Make a .exe file - RECOMMENDED (Click here):END -->
+  <img src="https://github.com/user-attachments/assets/d6bbdbcc-7d98-4fc1-a4cc-5d4c4fff7511" alt="dist folder">
+
+</details>
+<br>
+<!-- Option a: Make a .exe file - RECOMMENDED (Click here):END -->
 
 
 
 
-  <!-- Option b: Execute from python (Click here):START -->
-  <details>
-    <summary>Option b: Execute from python (Click here)</summary>
+<!-- Option b: Execute from python (Click here):START -->
+<details>
+  <summary>Option b: Execute from python (Click here)</summary>
 
-    3. Install virtual enviroment with command `python -m venv venv`
-
-    4. Activate the virtual enviroment with `venv scripts activate`
-
-    5. Install dependencies from requiremente.txt: `pip install -r requirements.txt` 
-  (check that your venv is active).
-
-    6. Execute run.py to enter to the main menu: `python run.py` 
+  <ol start="6">
+    <li>Execute run.py to enter the main menu: <code>python run.py</code></li><br>
+  </ol>
   
-  ![father's directory](https://github.com/user-attachments/assets/efa73448-b450-4e51-a26c-c2f8ebb882a7)
-  
+  <img src="https://github.com/user-attachments/assets/5550e35f-2d79-4afd-bb6a-b61d27045e82" alt="father's directory">
 
-    **Scripts will modify the name of files in project's parent directory instead where the executable is.**
+  <!---
+  <img src="https://github.com/user-attachments/assets/efa73448-b450-4e51-a26c-c2f8ebb882a7" alt="father's directory">
+  --->
 
-  </details>
-  <br>
-  <!-- Option b: Execute from python (Click here):END -->    
+  <p><strong>Scripts will modify the name of files in project's parent directory instead of where the executable is.</strong></p>
+
+</details>
+<br>
+<!-- Option b: Execute from python (Click here):END -->    
 
 
 # 🌐 LANGUAGES (instructions):
@@ -70,6 +88,8 @@ Generate an automatic excel template with the name of all files in the same fold
 
 
 # 📑 INSTRUCTIONS
+  1. Move the executable to the folder where the files you want to modify are located.
+    ![move_to_folder](https://github.com/user-attachments/assets/a186ba66-b2f7-452f-8797-4f054907d76f)
 
   2. With the main menu open you can run all scripts.
     ![main menu](https://github.com/user-attachments/assets/9e9d432d-d3e2-4f8a-a4c4-dea361f054b3)
@@ -98,7 +118,7 @@ Generate an automatic excel template with the name of all files in the same fold
 
 
 # ✍️ Author
-- [@Jose Chirif](https://github.com/JoseChirif)
+[@Jose Chirif](https://github.com/JoseChirif)
 
 ## 🚀 About me
 I'm an Industrial Engineer specialized in process optimization, business intelligence and data science.
