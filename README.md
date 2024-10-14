@@ -54,7 +54,6 @@ Generate an automatic excel template with the name of all files in the same fold
   <img src="https://github.com/user-attachments/assets/d6bbdbcc-7d98-4fc1-a4cc-5d4c4fff7511" alt="dist folder">
 
 </details>
-<br>
 <!-- Option a: Make a .exe file - RECOMMENDED (Click here):END -->
 
 
@@ -77,12 +76,11 @@ Generate an automatic excel template with the name of all files in the same fold
   <p><strong>Scripts will modify the name of files in project's parent directory instead of where the executable is.</strong></p>
 
 </details>
-<br>
 <!-- Option b: Execute from python (Click here):END -->    
 
 
 # 🌐 LANGUAGES (instructions):
-- [Instructions in **ENGLISH** (click here)](#📑-instructions)
+- [Instructions in **ENGLISH** (click here)](#-instructions)
 
 - [Instrucciones en **ESPAÑOL** (click here)](https://github.com/JoseChirif/Mass-file-renaming/blob/main/instructions/Instructions%20-%20es.md)
 
@@ -107,7 +105,7 @@ Generate an automatic excel template with the name of all files in the same fold
     ![renaming](https://github.com/user-attachments/assets/e8aa9663-363b-4297-aa6f-55cae6d83c77)
 
 
-  **You have 2 options:**
+  **You have 2 options:** <br>
     ![options to modify names](https://github.com/user-attachments/assets/8d4136fe-5dc2-43c5-875a-fc729e16124d) 
   - Option 1: Made a new folder (with the same name as the project) and copy all the files with the new name.
   - Option 2: Overwrite the files with the new names.
