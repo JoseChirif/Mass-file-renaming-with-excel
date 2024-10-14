@@ -6,12 +6,15 @@ Generate an automatic excel template with the name of all files in the same fold
 ![Mass file renaming intro](https://github.com/user-attachments/assets/a83851ec-b4ee-43c1-a433-60317cde5f2f)
 
   <!--- Badges /> --->
-<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+<p align="center">
   <img src="https://img.shields.io/github/languages/top/JOSECHIRIF/Mass-file-renaming" alt="Languages" />
+  &nbsp;
   <img src="https://img.shields.io/badge/python-3.11.5-blue" alt="Python version" />
+  &nbsp;
   <img src="https://img.shields.io/github/license/JoseChirif/Mass-file-renaming-with-excel" alt="License" />
+  &nbsp;
   <img src="https://img.shields.io/github/release/JoseChirif/Mass-file-renaming-with-excel" alt="release" />
-</div>
+</p>
 
 <br>
 
@@ -45,6 +48,7 @@ Generate an automatic excel template with the name of all files in the same fold
   <summary>
     Option a: Make a .exe file - RECOMMENDED (Click here)
   </summary>
+  <br>
 
   <ol start="6">
     <li>Run: <code>pyinstaller --onefile --windowed --clean --noupx --add-data "assets/*;assets" --add-data "config/*;config" --add-data "functions/*;functions" --add-data "locales/*;locales" --add-data "src/*;src" --add-data "LICENSE.txt;." --add-data "README.md;." --icon "assets/icon.ico" --name "0 rename.exe" run.py</code></li><br>
@@ -52,8 +56,9 @@ Generate an automatic excel template with the name of all files in the same fold
   </ol>
 
   <img src="https://github.com/user-attachments/assets/d6bbdbcc-7d98-4fc1-a4cc-5d4c4fff7511" alt="dist folder">
-
+<hr>
 </details>
+<br>
 <!-- Option a: Make a .exe file - RECOMMENDED (Click here):END -->
 
 
@@ -61,10 +66,14 @@ Generate an automatic excel template with the name of all files in the same fold
 
 <!-- Option b: Execute from python (Click here):START -->
 <details>
-  <summary>Option b: Execute from python (Click here)</summary>
+  <summary>
+    Option b: Execute from python (Click here)
+  </summary>
+  <br>
 
   <ol start="6">
     <li>Execute run.py to enter the main menu: <code>python run.py</code></li><br>
+    <li><p><strong>Scripts will modify the name of files in project's parent directory instead of where the executable is.</strong></p></li>
   </ol>
   
   <img src="https://github.com/user-attachments/assets/5550e35f-2d79-4afd-bb6a-b61d27045e82" alt="father's directory">
@@ -73,9 +82,9 @@ Generate an automatic excel template with the name of all files in the same fold
   <img src="https://github.com/user-attachments/assets/efa73448-b450-4e51-a26c-c2f8ebb882a7" alt="father's directory">
   --->
 
-  <p><strong>Scripts will modify the name of files in project's parent directory instead of where the executable is.</strong></p>
-
+  
 </details>
+<br>
 <!-- Option b: Execute from python (Click here):END -->    
 
 
