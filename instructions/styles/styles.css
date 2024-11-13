@@ -21,6 +21,12 @@ img {
     max-width: 800px; 
     border: 0.2px solid slategrey;
 }
+@media (max-width: calc(800px * 0.95)) {
+    img {
+        max-width: 95%;
+    }
+  }
+
 
 h4, ul{
     margin-bottom: 0.3rem;

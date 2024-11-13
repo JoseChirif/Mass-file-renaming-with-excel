@@ -1,23 +1,23 @@
-# DESACTIVAR PROTECCION DE LA HOJA EXCEL
-#Importo librerias
+# DISABLE EXCEL SHEET PROTECTION
+#Import libraries
 import os
 from openpyxl import load_workbook
 
 
 
-# Importo funciones a usar
+# Import functions
 from functions.functions import working_directory, show_error, show_message, load_translations,choose_language, exit_if_directly_executed
-# Importo parámetros de config
+# Import parameters form config
 from config.config import excel_name
 
-# Importo otros scripts
+# Import other scripts
 from src.a_Create_excel import main as script0_main
 
 
 language = choose_language()
 
 
-# Declaro la funcion main para al ejecutarlo en otros scripts trasmita el parámetro language
+# Declare the main function to transmit the language parameter when executing it in other scripts.
 def main(language):
     """
     Unlocks the Excel sheet with the same name as the project or executable file, enabling full editing. The function uses the provided language parameter to handle any language-specific functionality.
@@ -30,57 +30,53 @@ def main(language):
     Returns:
         None: This function does not return any value. It modifies the Excel file by unlocking the sheet to allow full editing.
     """
-    # Cargar traducciones
+    # Load translations
     traducciones = load_translations(language)
 
-    # Declaro textos de locales (load_translations) _1
-    renamed = traducciones["renamed"]
 
-    # Declaro textos de locales (load_translations) _2 _FINAL
     error_text = traducciones['error_text']
     error_excel_not_found = traducciones['error_excel_not_found'].format(excel_name=excel_name)
     error_excel_open = traducciones['error_excel_open'].format(excel_name=excel_name)
     unlocked_title = traducciones['unlocked_title']
     unlocked_message = traducciones['unlocked_message']
 
-    ## EJECUCIÓN
-    # Aseguro estar en el directorio correcto
-    directorio = working_directory()
+    ## EXECUTION
+    # Make sure you are in the working directory
+    directory = working_directory()
 
-    # Ruta completa del archivo Excel
-    excel_name_ruta = os.path.join(directorio, excel_name)
+    # Excel file path
+    excel_name_ruta = os.path.join(directory, excel_name)
 
 
-    ## TRABAJO Y LIMPIEZA DEL DATAFRAME
-    # Verifica si el archivo Excel existe
+    ## DATAFRAME WORKING AND CLEANING
+    # Check if the Excel file exists
     if not os.path.exists(excel_name_ruta):
-        # Muestra un mensaje de error si el archivo no existe
+        # If it doesn't exist
+        # Displays an error message
         show_error(error_text, error_excel_not_found)
-
-        # Corre el script src/0 Importar archivos a excel.py
+        # Run src/a_Create_excel.py
         script0_main(language)
-        
-        # Corto la ejecución
+        # Abort the execution
         exit_if_directly_executed()
 
     else:
         #print(excel_name_ruta)
-        # Si el archivo existe, lo abriré para quitarle la protección
+        # If the file exists, I will open it to unprotect it.
         try:
             wb = load_workbook(excel_name_ruta)
-        except PermissionError: #Si el excel esta abierto.
+        except PermissionError: # If the excel is open.
             show_error(error_text, error_excel_open)
-            # Corto la ejecución
+            # Abort the execution
             exit_if_directly_executed()
             
             
-        ws = wb.active  # Selecciona la primera hoja de trabajo (la activa)
+        ws = wb.active  # Selects the first worksheet (the active one)
         ws.protection.sheet = False
-        # Guardar el archivo modificado
+        # Save the unprotected excel
         wb.save(excel_name_ruta)
         wb.close()
         
-        #Mostrar mensaje
+        # Show message
         show_message(unlocked_title, unlocked_message)
 
 

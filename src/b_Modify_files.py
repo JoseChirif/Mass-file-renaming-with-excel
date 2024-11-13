@@ -1,20 +1,20 @@
-#Importo librerias
+#Import libraries
 import os
 import pandas as pd
 
 
-# Importo funciones a usar
+# Import functions
 from functions.functions import working_directory, show_error, show_message, show_options, unlock_excel_sheet, copy_files_with_new_names, rename_files_locally, load_translations, choose_language, exit_if_directly_executed
-# Importo parámetros de config
+# Import parameters from config
 from config.config import project_name, excel_name, files_to_avoid
 
-# Importo otros scripts
+# Import another scritps
 from src.a_Create_excel import main as script0_main
 
 
 language = choose_language()
 
-# Declaro la funcion main para al ejecutarlo en otros scripts trasmita el parámetro language
+# Declare the main function to transmit the language parameter when executing it in other scripts.
 def main(language):
     """
     Modifies the names of files in the current directory based on the Excel filescreated earlier. The Excel file must have the same name as the project or executable. The function uses the provided language parameter to handle any language-specific functionality.
@@ -27,126 +27,121 @@ def main(language):
     Returns:
         None: This function does not return any value. It modifies the names of the files in the directory based on the Excel file data.
     """
-    # Cargar traducciones
-    traducciones = load_translations(language)
+    # Load translations
+    translations = load_translations(language)
 
 
-    # Declaro textos de locales (load_translations) _1
-    renamed = traducciones["renamed"]
+    # load translations (part 1)
+    renamed = translations["renamed"]
 
-    # Obtener carpeta destino
+    # Get destination folder
     folder_with_renamed_files = project_name + " - " + renamed    
-    # Aseguro estar en el directorio correcto
-    directorio = working_directory()
+    # Work into working directory
+    directory = working_directory()
 
 
-    # Declaro textos de locales (load_translations) _2 _Final
-    select_an_option_text = traducciones["select_an_option_text"]
-    error_open_file = traducciones["error_open_file"].format(excel_name=excel_name)
-    excel_column_original_name = traducciones['excel_column_original_name']
-    excel_column_extention = traducciones['excel_column_extention']
-    excel_column_new_name = traducciones["excel_column_new_name"]
-    excel_column_original_name_final = traducciones["excel_column_original_name_final"]
-    excel_column_new_name_final = traducciones["excel_column_new_name_final"]
-    excel_error_column_new_names_empty = traducciones["excel_error_column_new_names_empty"].format(excel_column_new_name=excel_column_new_name)
-    excel_column_status = traducciones["excel_column_status"]
-    excel_column_error = traducciones["excel_column_error"]
-    option1 = traducciones["option1"]
-    option2 = traducciones["option2"]
-    error_excel_not_found = traducciones["error_excel_not_found"].format(excel_name=excel_name)
-    error_excel_structure_modified = traducciones["error_excel_structure_modified"].format(excel_column_original_name=excel_column_original_name, excel_column_extention=excel_column_extention, excel_column_new_name=excel_column_new_name)
-    error_unknown = traducciones["error_unknown"]
-    excel_error_file_not_found = traducciones["excel_error_file_not_found"]
-    excel_error_file_already_proceced = traducciones["excel_error_file_already_proceced"].format(excel_column_new_name_final=excel_column_new_name_final)
-    excel_error_file_already_exist_in_new_directory = traducciones["excel_error_file_already_exist_in_new_directory"].format(excel_column_new_name_final=excel_column_new_name_final, folder_with_renamed_files=folder_with_renamed_files)
-    excel_error_file_already_exist_in_the_same_folder = traducciones['excel_error_file_already_exist_in_the_same_folder'].format(excel_column_new_name_final=excel_column_new_name_final)
-    excel_error_conflic = traducciones['excel_error_conflic'].format(excel_column_new_name_final=excel_column_new_name_final)
-    excel_template_error_not_found = traducciones["excel_template_error_not_found"].format(excel_name=excel_name)
-    excel_template_error_not_allowed = traducciones["excel_template_error_not_allowed"].format(excel_name=excel_name)
-    success_title = traducciones['success_title']
-    success_message = traducciones['success_message'].format(folder_with_renamed_files=folder_with_renamed_files)
-    error_text = traducciones['error_text']
-    excel_error_files_not_found = traducciones['excel_error_files_not_found']
-    excel_errors_log_message = traducciones['excel_errors_log_message'].format(excel_column_error = excel_column_error)
-    cancel_title = traducciones['cancel_title']
-    start_function_title = traducciones['start_function_title']
-    start_function_message = traducciones['start_function_message']
-    operation_canceled_title = traducciones['operation_canceled_title']
-    operation_canceled_message = traducciones['operation_canceled_message']
+    # load translations (part 1 - final)
+    select_an_option_text = translations["select_an_option_text"]
+    error_open_file = translations["error_open_file"].format(excel_name=excel_name)
+    excel_column_original_name = translations['excel_column_original_name']
+    excel_column_extention = translations['excel_column_extention']
+    excel_column_new_name = translations["excel_column_new_name"]
+    excel_column_original_name_final = translations["excel_column_original_name_final"]
+    excel_column_new_name_final = translations["excel_column_new_name_final"]
+    excel_error_column_new_names_empty = translations["excel_error_column_new_names_empty"].format(excel_column_new_name=excel_column_new_name)
+    excel_column_status = translations["excel_column_status"]
+    excel_column_error = translations["excel_column_error"]
+    option1 = translations["option1"]
+    option2 = translations["option2"]
+    error_excel_not_found = translations["error_excel_not_found"].format(excel_name=excel_name)
+    error_excel_structure_modified = translations["error_excel_structure_modified"].format(excel_column_original_name=excel_column_original_name, excel_column_extention=excel_column_extention, excel_column_new_name=excel_column_new_name)
+    error_unknown = translations["error_unknown"]
+    excel_error_file_not_found = translations["excel_error_file_not_found"]
+    excel_error_file_already_proceced = translations["excel_error_file_already_proceced"].format(excel_column_new_name_final=excel_column_new_name_final)
+    excel_error_file_already_exist_in_new_directory = translations["excel_error_file_already_exist_in_new_directory"].format(excel_column_new_name_final=excel_column_new_name_final, folder_with_renamed_files=folder_with_renamed_files)
+    excel_error_file_already_exist_in_the_same_folder = translations['excel_error_file_already_exist_in_the_same_folder'].format(excel_column_new_name_final=excel_column_new_name_final)
+    excel_error_conflic = translations['excel_error_conflic'].format(excel_column_new_name_final=excel_column_new_name_final)
+    excel_template_error_not_found = translations["excel_template_error_not_found"].format(excel_name=excel_name)
+    excel_template_error_not_allowed = translations["excel_template_error_not_allowed"].format(excel_name=excel_name)
+    success_title = translations['success_title']
+    success_message = translations['success_message'].format(folder_with_renamed_files=folder_with_renamed_files)
+    error_text = translations['error_text']
+    excel_error_files_not_found = translations['excel_error_files_not_found']
+    excel_errors_log_message = translations['excel_errors_log_message'].format(excel_column_error = excel_column_error)
+    cancel_title = translations['cancel_title']
+    start_function_title = translations['start_function_title']
+    start_function_message = translations['start_function_message']
+    operation_canceled_title = translations['operation_canceled_title']
+    operation_canceled_message = translations['operation_canceled_message']
 
 
-
-
-
-
-    #opciones metodo
+    # border colors
     border1 = "black"
     border2 = "red"
 
 
 
 
-    ## EJECUCIÓN
+    ## EXECUTION
 
 
-    # Ruta completa del archivo Excel
-    excel_save_route = os.path.join(directorio, excel_name)
+    # Excel file path
+    excel_save_route = os.path.join(directory, excel_name)
 
 
-    ## TRABAJO Y LIMPIEZA DEL DATAFRAME
-    # Verifica si el archivo Excel existe
+    ## DATAFRAME WORKING AND CLEANING
+    # Check if the Excel file exists
     if not os.path.exists(excel_save_route):
-        # Muestra un mensaje de error si el archivo no existe
+        #If it doesn't exist
+        # Displays an error message if the file does not exist
         show_error(error_text, error_excel_not_found)
-
-        # Corre el script src/0 Importar archivos a excel.py
+        # Run src/a_Create_excel.py
         script0_main(language)
-        
-        # Corto la ejecución
+        # Abort the execution
         exit_if_directly_executed()
 
     else:
-        # Si el archivo existe, intantará leerlo
+        # If the file exists, it will try to read it.
         try:
             df = pd.read_excel(excel_save_route, usecols=[0, 1, 2])
         except PermissionError:
-            # Si el archivo está abierto o en uso, se muestra un mensaje de error y corto la ejecución
+            # If the file is open or in use, an error message is displayed and execution is aborted.
             show_error(error_text, error_open_file)
             exit_if_directly_executed()
             
         
-        # Si la columna 'A' esta vacia, desbloqueamos el excel y mostramos error:
+        # If column 'A' is empty, we unlock excel and display error:
         if df.iloc[:, 0].isnull().all():
             unlock_excel_sheet(excel_save_route)
             show_error(error_text, error_excel_structure_modified)
-            # Corto la ejecución
+            # Abort the execution
             exit_if_directly_executed()
         
         
-        # Elimino las celdas que en la columna 'A' están vacias
+        # Delete the cells that are empty in column 'A'.
         df = df[pd.notna(df.iloc[:, 0])]
         
-        #Crear valores vacio en vez de la asignación 'nan' en el df
+        # Create empty values instead of the assignment 'nan' in df
         df = df.fillna('')
         
     
-        # Convertir los nombres a tipo str
+        # Convert names to type str
         df.iloc[:, [0, 2]] = df.iloc[:, [0, 2]].astype(str)
     
 
-        # Crear la columna excel_column_original_name_final concatenando columna_nombre_original_excel_inicial y columna_extention_excel_inicial
+        # Create column excel_column_original_original_name_final by concatenating column_original_name_excel_initial and column_extention_excel_initial
         df[excel_column_original_name_final] = df.iloc[:, 0] + df.iloc[:, 1]
 
         
-        #LIMPIEZA
-        # Creo df_conflicto, filtrando df con files_to_avoid para mostrar error al final
-        df_conflicto = df[df.loc[:, excel_column_original_name_final].isin(files_to_avoid)]
+        # CLEANING
+        # I create df_conflict, filtering df with files_to_avoid to show error at the end
+        df_conflict = df[df.loc[:, excel_column_original_name_final].isin(files_to_avoid)]
 
-        # ELimino los archivos que pueden generar conflicto
+        # Delete files that may generate conflict
         df = df[~df.loc[:, excel_column_original_name_final].isin(files_to_avoid)]
 
 
-        # Crear la columna excel_column_new_name_final (original + extention si nuevo esta vacio. Sino, nuevo + extention)
+        # Create column excel_column_new_name_final (original + extention if new is empty, otherwise new + extention)
         df[excel_column_new_name_final] = df.apply(
         lambda row: (row.iloc[0] + row.iloc[1])  
         if row.iloc[2] == ''  
@@ -154,17 +149,17 @@ def main(language):
         axis=1
         )
         
-        #repetir con df_conflicto para crear el log y crear la columna error para que quede igual al df al final del proceso
-        df_conflicto[excel_column_new_name_final] = df_conflicto.apply(
+        # Repeat the process with df_conflict to create the log and create the error column to be equal to the df at the end of the process
+        df_conflict[excel_column_new_name_final] = df_conflict.apply(
         lambda row: (row.iloc[0] + row.iloc[1])  
         if row.iloc[2] == ''  
         else (row.iloc[2] + row.iloc[1]), 
         axis=1
         )
-        df_conflicto[excel_column_error] = excel_error_conflic
+        df_conflict[excel_column_error] = excel_error_conflic
         
         
-        # Verifico si hay nombres para modificar. Si no hay, muestró mensaje de error y cierro el programa.
+        # Check if there are names to modify. If there are not, I show an error message and close the program..
         if df.iloc[:, 2].isnull().all() or (df.iloc[:, 2] == "").all():
             show_error(error_text, excel_error_column_new_names_empty)
             exit_if_directly_executed()
@@ -173,36 +168,36 @@ def main(language):
 
 
 
-    ## MÉTODOS PARA MODIFICAR NOMBRES  
-    # Pregunta método
-    nro_opcion = show_options(select_an_option_text, option1, option2, border1, border2, cancel_title)
+    ## METHODS TO MODIFY NAMES  
+    # Ask method
+    Option_selected = show_options(select_an_option_text, option1, option2, border1, border2, cancel_title)
 
-    # Verificando nro_opcion
-    # print(f'Se escogió la opción {nro_opcion}')
-    # if nro_opcion == None:
-    #     print("Cancelar")
+    # Verifying Option_selected
+    # print(f'The option selected is {Option_selected}')
+    # if Option_selected == None:
+    #     print("Cancel")
     # else:
-    #     print(f"Opción seleccionada: {globals()[f'opcion{nro_opcion}']}" if f'opcion{nro_opcion}' in globals() else "Error: Opción no válida.")
+    #     print(f"Option selected: {globals()[f'opcion{Option_selected}']}" if f'option{Option_selected}' in globals() else "Error: Option invalid.")
     
     
-    # Si da cancelar, corto la ejecución.   
-    if nro_opcion == None:
+    # If cancel is given, the execution is aborted.   
+    if Option_selected == None:
         exit_if_directly_executed()
-    # Si da opción 1, usaré método de nueva carpeta. 
-    elif nro_opcion == 1:
-        #Crea la carpeta y copia los archivos con nuevo nombre:
-        ruta_carpeta_destino = os.path.join(directorio, folder_with_renamed_files)
-        # Correr metodo
-        copy_files_with_new_names(df,directorio,ruta_carpeta_destino, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_new_directory, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status)
-    #Si se da la opción 2, usaré el mismo metodo copiandolo en la misma carpeta
-    elif nro_opcion == 2:
-        # Correr metodo sobre la misma carpeta
-        df = rename_files_locally(df, directorio, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_the_same_folder, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status, start_function_title, start_function_message, operation_canceled_title, operation_canceled_message)
+    # If option 1 is given, the "create new folder" method will be used: 
+    elif Option_selected == 1:
+        # Create the folder and copy the files with new name:
+        ruta_carpeta_destino = os.path.join(directory, folder_with_renamed_files)
+        # Run function
+        copy_files_with_new_names(df,directory,ruta_carpeta_destino, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_new_directory, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status)
+    # If option 2 is given, the "overwriting files" method will be usde:
+    elif Option_selected == 2:
+        # Run function
+        df = rename_files_locally(df, directory, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_the_same_folder, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status, start_function_title, start_function_message, operation_canceled_title, operation_canceled_message)
         folder_with_renamed_files = working_directory()
         
         
     
-    # Otra opcion marcará error y saldrá del programa
+    # Another option will fail and abort the script.
     else:
         show_error(error_text, error_unknown)
         exit_if_directly_executed()
@@ -211,57 +206,57 @@ def main(language):
 
 
 
-    ## CREACIÓN DEL LOG DE excel_column_error EN EXCEL
-    # Filtrar el DataFrame para que excel_column_status sea diferente de 'Ok'
+    ## CREATING THE LOG OF excel_column_error IN EXCEL
+    # Filter the DataFrame so that excel_column_status is different from 'Ok'.
     df_error = df[df[excel_column_status] != 'Ok']
 
-    #Si el len(df_error) = 0, mostrar mensaje de éxito y salir.
+    # If len(df_error) = 0, show success message and exit
     if len(df_error)==0:
         show_message(success_title, success_message)
         exit_if_directly_executed()
         
-    #Si len(df_error) != 0 Entonces crear excel con log de excel_column_error
+    # If len(df_error) != 0 Then create excel with log of excel_column_error
     else: 
-        # Cambiar el nombre de la columna excel_column_status a excel_column_error
+        # Rename column name excel_column_status to excel_column_error
         df_error = df_error.rename(columns={excel_column_status: excel_column_error})
         
-        # Añado df_conflicto
-        df_error = pd.concat([df_conflicto, df_error], ignore_index=True)
+        # Add df_conflict
+        df_error = pd.concat([df_conflict, df_error], ignore_index=True)
 
-        # Guardar el DataFrame en un archivo Excel (no reemplazar el último):
+        # Save the DataFrame in an Excel file (do not replace the last one):
         excel_error_log = excel_name + "_" + error_text
         extention = ".xlsx"
-        contador = 1
+        counter = 1
         
-        # Ruta completa inicial
-        ruta_completa = os.path.join(directorio, f"{excel_error_log} - {contador}{extention}")
+        # Saving path
+        excel_error_logs_path = os.path.join(directory, f"{excel_error_log} - {counter}{extention}")
 
-        # Verificar si el archivo existe y agregar sufijos con números si es necesario
-        while os.path.exists(ruta_completa):
-            contador += 1
-            ruta_completa = os.path.join(directorio, f"{excel_error_log} - {contador}{extention}")
+        # Check if the file exists and add suffixes with numbers
+        while os.path.exists(excel_error_logs_path):
+            counter += 1
+            excel_error_logs_path = os.path.join(directory, f"{excel_error_log} - {counter}{extention}")
 
 
-        # Filtrar la columna 6 (excel_column_error) para asegurarse que la columna A y B formen archivos de la carpeta
-        filtro = df_error[df_error.iloc[:, 5].str.startswith(excel_error_file_not_found)]
-        # Si el filtro y df tiene la misma cantidad de filas => La columna 'A' tiene nombres que no corresponden a los archivos de la carpeta:
-        if len(filtro) == len(df):
-            # Si se da la condición marco error
+        # Filter column 6 (excel_column_error) to make sure that column A and B are files in the folder
+        filter = df_error[df_error.iloc[:, 5].str.startswith(excel_error_file_not_found)]
+        # If filter_df and processed_df have the same number of rows => Column 'A' has names that do not correspond to the files in the folder:
+        if len(filter) == len(df):
+            # If the frame condition save the errors
             unlock_excel_sheet(excel_save_route)
             show_error(error_text, excel_error_files_not_found + error_excel_structure_modified)
-            # Finalizar la ejecución
+            # Abort the execution
             exit_if_directly_executed()
 
             
-        # Modifico los valores de la columna 6 (errores) que tengan el titulo de la columna 5 (nombre nuevo final)
+        # Modify the values of column 6 (errors) to have the title of column 5 (new name at the end).
         df_error.iloc[:, 5] = df_error.apply(lambda row: row.iloc[5].replace(f"{excel_column_new_name_final}", str(row.iloc[4])) if isinstance(row.iloc[5], str) else row.iloc[5], axis=1)
 
         
-        # Guardar el archivo en la ruta final
-        df_error.to_excel(ruta_completa, index=False)
+        # Save the file in the final path
+        df_error.to_excel(excel_error_logs_path, index=False)
 
-        show_error(error_text, excel_errors_log_message + f'{excel_error_log} - {contador}{extention}')
-        # Finalizar la ejecución
+        show_error(error_text, excel_errors_log_message + f'{excel_error_log} - {counter}{extention}')
+        # Abort the execution
         exit_if_directly_executed()
 
 

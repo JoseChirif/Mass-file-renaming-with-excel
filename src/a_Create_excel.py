@@ -111,7 +111,7 @@ def main(language):
                 show_message(file_replaced_title, file_replaced_message)
             except PermissionError: # If the excel is open.
                 show_error(error_text, error_open_file)
-                # Aborting execution
+                # Abort the execution
                 exit_if_directly_executed()
     else:
         try:
@@ -120,7 +120,7 @@ def main(language):
             show_message(file_created_title, file_created_message)
         except PermissionError: # If the excel is open.
             show_error(error_text, error_open_file)
-            # Aborting execution
+            # Abort the execution
             exit_if_directly_executed()
             
             
