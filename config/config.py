@@ -1,13 +1,10 @@
-#librerias
-import sys
-import os
+# Import functions
+from functions.functions import relative_route_to_file, get_filename_or_directory,  load_available_languages, load_translations, delete_extention
 
-# Añadir el directorio del proyecto a sys.path para llamar functions.functions en mis scripts
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from functions.functions import relative_route_to_file, obtener_nombre_archivo_o_directorio,  cargar_lista_de_lenguajes, cargar_traducciones, eliminar_desde_ultimo_punto
+# Version
+__version__ = '1.0.0'
 
-
-# Rutas y variables comunes
+# Common routes and variables
 # icon_picture_ico
 icon_picture_ico = relative_route_to_file("assets", "icon.ico")
 
@@ -18,29 +15,30 @@ icon_picture_png = relative_route_to_file("assets", "icon.png")
 logo_github_png = relative_route_to_file("assets", "icon_github.png")
 
 
-# Nombres comunes scripts
-project_name  = obtener_nombre_archivo_o_directorio()
-excel_name = eliminar_desde_ultimo_punto(project_name) + '.xlsx' # eliminar_desde_ultimo_punto borrara la extensión que tenga (ejemplo .exe)
+# Common names in excel
+project_name  = get_filename_or_directory()
+excel_name = delete_extention(project_name) + '.xlsx' # this function doesn't consider the file extention
 
 
-# Archivos a ignorar en df
+# Files to be ignored in df
 files_to_avoid = [
+    "_internal",
     excel_name,
-    project_name # Obtiene el name del file actual
+    project_name # Gets the name of the current file
 ]    
-# Añado folder renombrado en cada idioma
-# Obtener el diccionario de idiomas del archivo languages.json
-idiomas = cargar_lista_de_lenguajes()
-# Iterar sobre cada idioma en el diccionario de idiomas
-for idioma in idiomas:
-    # Cargar las traducciones del idioma actual
-    traducciones = cargar_traducciones(idioma)
-    # Agregar folder_with_renamed_files a la lista
-    if 'renamed' in traducciones:
-        renamed = traducciones['renamed']
+# Add renamed folder in each language
+# Get language dictionary from languages.json file
+languages = load_available_languages()
+# Iterate over each language in the language dictionary
+for language in languages:
+    # Load the translations of the current language
+    tanslations = load_translations(language)
+    # Add folder_with_renamed_files to the list
+    if 'renamed' in tanslations:
+        renamed = tanslations['renamed']
         folder_with_renamed_files = project_name + " - " + renamed
         files_to_avoid.append(folder_with_renamed_files)
         
 
-# print(files_to_avoid)
+
 

@@ -1,0 +1,47 @@
+/* styles/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    color: #333;
+    margin-inline: 2.5rem;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+li {
+    margin-bottom: 0.3rem;
+}
+
+img {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 800px; 
+    border: 0.2px solid slategrey;
+}
+
+h4, ul{
+    margin-bottom: 0.3rem;
+}
+
+h3{
+    margin-bottom: 2rem;
+}
+
+/* Listas desordenadas */
+ul li {
+    list-style-type: none; /* Elimina los puntos predeterminados */
+  }
+
+  ul li::before {
+    content: "- "; /* Añade un guion antes de cada elemento */
+  }
+
+
+.last-picture{
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+  }

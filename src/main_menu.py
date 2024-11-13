@@ -7,19 +7,18 @@ import subprocess
 from PIL import Image, ImageTk
 
 
-# Importo funciones a usar
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))  # Me dirije al directorio del proyecto
-from functions.functions import open_web_page, cargar_lista_de_lenguajes, cargar_traducciones, ajustar_texto, ejecutar_script0, ejecutar_script1, ejecutar_script2
+from functions.functions import open_web_page, load_available_languages, load_translations,  get_instructions, adjust_text, execute_script0, execute_script1, execute_script2
 
 # Importo parámetros de config
-from config.config import icon_picture_png, icon_picture_ico, logo_github_png
+from config.config import icon_picture_png, icon_picture_ico, logo_github_png, __version__
+
+current_version = f'v{__version__}'
 
 idioma = "en" # Idioma predeterminado
 
 
-
 # Cargar los nombres de los idiomas
-nombres_idiomas = cargar_lista_de_lenguajes()
+nombres_idiomas = load_available_languages()
 # Los ordeno alfabeticamente para el menú
 nombres_idiomas = dict(sorted(nombres_idiomas.items(), key=lambda item: item[1]))
 
@@ -32,9 +31,9 @@ idiomas_nombres = {v: k for k, v in nombres_idiomas.items()}
 # print(f'nombres_idiomas = {nombres_idiomas}')
 # print(f'idiomas_nombres = {idiomas_nombres}')
 
-traducciones = cargar_traducciones(idioma)
+traducciones = load_translations(idioma)
 
-# Declaro textos de locales (cargar_traducciones)
+# Declaro textos de locales (load_translations)
 project_title = traducciones["project_title"]
 language_text = traducciones['language_text']
 select_an_option_text = traducciones["select_an_option_text"]
@@ -48,25 +47,38 @@ instructions_text = traducciones["instructions_text"]
 
 # Estilos
 fondo_ventana = '#F0F0F0'
-padding_botones = 10  # Espacio alrededor de los botones
+padding_botones = 2  # Espacio alrededor de los botones
 espaciado_botones = 10  # Espaciado vertical entre botones
 ancho_bordes_botones = 2   # Ancho del borde de los botones
 color_borde_botones = "black"  # Color del borde de los botones
 padding_text_button_x = 20  # Padding horizontal entre texto y borde del botón
-padding_text_button_y = 10  # Padding vertical entre texto y borde del botón
+padding_text_button_y = 2  # Padding vertical entre texto y borde del botón
 tamano_ventana = "650x650"   # Tamaño personalizado de la ventana (ancho x alto)
-margen = 30        # Margen izquierdo para alinear los textos
+margin = 30        # margin izquierdo para alinear los textos
 ancho_minimo_ventana = 300
 link_color = "#0770E0"
 
 
 
-def seleccionar_idioma(event):
+
+
+def select_language(event):
+    """
+    Handles the language selection in the application. This function is triggered when the user selects a language from the available options. It updates the interface and loads the corresponding language settings.
+
+    This function is located in src/main_menu.py
+
+    Arg:
+        event (Event): The event object that is passed when the user selects a language from the menu or interface.
+
+    Returns:
+        None: This function does not return any value. It updates the language settings and refreshes the interface according to the selected language.
+    """
     global idioma
     idioma_seleccionado = combo_idiomas.get()  # Obtener el idioma seleccionado del Combobox
     idioma = idiomas_nombres[idioma_seleccionado]  # Obtener el código del idioma desde idiomas_nombres
 
-    traducciones = cargar_traducciones(idioma)
+    traducciones = load_translations(idioma)
 
     # Actualizar los textos con las traducciones cargadas
     global project_title, language_text, select_an_option_text
@@ -97,9 +109,21 @@ def seleccionar_idioma(event):
     
     
 # Función para crear la interfaz gráfica
-def menu_principal():
+def main_menu():
+    """
+    Displays the main menu for the project, allowing the user to navigate between different functionalities. 
+    The function customizes the content and interface based on the provided language parameter.
+
+    This function is located in src/main_menu.py
+
+    Arg:
+        language (str): The language code (e.g., 'en', 'es') passed to customize the language-specific content and labels on the menu.
+
+    Returns:
+        None: This function does not return any value. It opens the main menu interface and handles user interaction for navigation.
+    """
     global ventana, combo_idiomas # Hacer que 'ventana' y combo_idiomas sea global
-    global lbl_project_title, etiqueta_idiomas, lbl_menu, language_text, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content, lbl_instructions  # Hacer los widgets globales para actualizarlos en seleccionar_idioma.
+    global lbl_project_title, etiqueta_idiomas, lbl_menu, language_text, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content, lbl_instructions  # Hacer los widgets globales para actualizarlos en select_language.
     ventana = tk.Tk()
     ventana.title(project_title)
     
@@ -131,7 +155,7 @@ def menu_principal():
     espacio_vacio.pack()
     # Crear un frame para el project_title y la imagen icon_picture_png
     frame_project_title = tk.Frame(ventana, bg=fondo_ventana)
-    frame_project_title.pack(pady=10, padx=margen, fill='x')
+    frame_project_title.pack(pady=10, padx=margin, fill='x')
 
     # Cargar la icon_picture_png
     img = Image.open(icon_picture_png)
@@ -156,7 +180,7 @@ def menu_principal():
     frame_idioma = tk.Frame(ventana, bg=fondo_ventana)  # Crea un frame con el fondo de la ventana
     # Etiqueta para "IDIOMAS" en negrita
     etiqueta_idiomas = tk.Label(frame_idioma, text=language_text, font=("Arial", 10, "bold"), bg=fondo_ventana, anchor="e")
-    etiqueta_idiomas.pack(side=tk.LEFT, padx=(0, 5))  # Empaquetar la etiqueta a la izquierda con un margen a la derecha
+    etiqueta_idiomas.pack(side=tk.LEFT, padx=(0, 5))  # Empaquetar la etiqueta a la izquierda con un margin a la derecha
     
     # Menú desplegable para seleccionar idioma usando ttk.Combobox
     variable_idioma = tk.StringVar(ventana)
@@ -164,13 +188,17 @@ def menu_principal():
 
     # Crear un Combobox para el idioma que muestre los nombres completos
     combo_idiomas = ttk.Combobox(frame_idioma, textvariable=variable_idioma, values=list(nombres_idiomas.values()))
-    combo_idiomas.bind("<<ComboboxSelected>>", seleccionar_idioma)  # Llamar a la función al seleccionar un idioma
-    # Empaqueta el Combobox a la derecha con un margen específico
-    combo_idiomas.pack(side=tk.RIGHT, padx=margen)
+    combo_idiomas.bind("<<ComboboxSelected>>", select_language)  # Llamar a la función al seleccionar un idioma
+    # Empaqueta el Combobox a la derecha con un margin específico
+    combo_idiomas.pack(side=tk.RIGHT, padx=margin)
 
     # Empaquetar el frame en la ventana
-    frame_idioma.pack(side=tk.TOP, anchor='ne', padx=(margen, 10), pady=(2, 0))
+    frame_idioma.pack(side=tk.TOP, anchor='ne', padx=(margin, 10), pady=(2, 0))
     
+    
+    
+    
+ 
     
     
     ## OPCIONES
@@ -179,34 +207,34 @@ def menu_principal():
     
     # Menú de opciones
     lbl_menu = tk.Label(frame_opciones_y_notas, text=select_an_option_text, font=("Arial", 10, "bold"), bg=fondo_ventana, anchor="w")
-    lbl_menu.pack(expand=True, fill='both', pady=5, padx=margen, anchor="w")
+    lbl_menu.pack(expand=True, fill='both', pady=5, padx=margin, anchor="w")
 
     # Botón 1: Crear Excel
-    btn_opcion_1 = tk.Button(frame_opciones_y_notas, text=text_button_1, font=("Arial", 10), command=lambda: ejecutar_script0(idioma),
+    btn_opcion_1 = tk.Button(frame_opciones_y_notas, text=text_button_1, font=("Arial", 10), command=lambda: execute_script0(idioma),
                             borderwidth=ancho_bordes_botones, highlightbackground=color_borde_botones,
                             padx=padding_text_button_x, pady=padding_text_button_y)
-    btn_opcion_1.pack(expand=True, fill='both', padx=margen+10, pady=(padding_botones, espaciado_botones))
+    btn_opcion_1.pack(expand=True, fill='both', padx=margin+10, pady=(padding_botones, espaciado_botones))
 
     # Botón 2: Modificar nombres
-    btn_opcion_2 = tk.Button(frame_opciones_y_notas, text=text_button_2, font=("Arial", 10),command=lambda: ejecutar_script1(idioma),
+    btn_opcion_2 = tk.Button(frame_opciones_y_notas, text=text_button_2, font=("Arial", 10),command=lambda: execute_script1(idioma),
                             borderwidth=ancho_bordes_botones, highlightbackground=color_borde_botones,
                             padx=padding_text_button_x, pady=padding_text_button_y)
-    btn_opcion_2.pack(expand=True, fill='both', padx=margen+10, pady=(padding_botones, espaciado_botones))
+    btn_opcion_2.pack(expand=True, fill='both', padx=margin+10, pady=(padding_botones, espaciado_botones))
 
     # Botón 3: Desbloquear hoja Excel
-    btn_opcion_3 = tk.Button(frame_opciones_y_notas, text=text_button_3, font=("Arial", 10),command=lambda: ejecutar_script2(idioma),
+    btn_opcion_3 = tk.Button(frame_opciones_y_notas, text=text_button_3, font=("Arial", 10),command=lambda: execute_script2(idioma),
                             borderwidth=ancho_bordes_botones, highlightbackground=color_borde_botones,
                             padx=padding_text_button_x, pady=padding_text_button_y)
-    btn_opcion_3.pack(expand=True, fill='both', padx=margen+10, pady=(padding_botones, espaciado_botones))
+    btn_opcion_3.pack(expand=True, fill='both', padx=margin+10, pady=(padding_botones, espaciado_botones))
 
     # Etiqueta notes_title en negrita antes de las notes_content
     lbl_project_title_notes_content = tk.Label(frame_opciones_y_notas, text=notes_title, font=("Arial", 10, "bold"), bg=fondo_ventana, anchor="w")
-    lbl_project_title_notes_content.pack(expand=True, fill='both', pady=(0, 0), padx=margen, anchor="n")
+    lbl_project_title_notes_content.pack(expand=True, fill='both', pady=(0, 0), padx=margin, anchor="n")
 
     # notes_content
     lbl_notes_content = tk.Label(frame_opciones_y_notas, text=notes_content, font=("Arial", 10), 
                                 justify="left", bg=fondo_ventana, anchor="n")
-    lbl_notes_content.pack(expand=True, fill='both', padx=margen, pady=(0, 0))
+    lbl_notes_content.pack(expand=True, fill='both', padx=margin, pady=(0, 0))
 
 
 
@@ -217,7 +245,7 @@ def menu_principal():
     ## LINK AL REPOSITORIO Y LICENCIA
     # Crear un frame para alinear la icon_picture_png y la licencia
     frame_github = tk.Frame(ventana, bg=fondo_ventana)
-    frame_github.place(relx=1.0, rely=0.0, anchor="se", x=-margen + 15, y=38)
+    frame_github.place(relx=1.0, rely=0.0, anchor="se", x=-margin + 15, y=38)
 
     #texto github
     lbl_github_text = tk.Label(frame_github, text="GitHub", font=("Bell MT", 14), bg=fondo_ventana, fg=link_color, cursor="hand2") 
@@ -259,27 +287,29 @@ def menu_principal():
 
     # Mostrar "MIT License" 
     lbl_licencia = tk.Label(ventana, text="MIT License", font=("Arial", 9), fg=link_color, cursor="hand2")    
-    lbl_licencia.place(relx=1.0, rely=1.0, anchor="se", x=-margen, y=-5)
+    lbl_licencia.place(relx=1.0, rely=1.0, anchor="se", x=-margin, y=-5)
     # Llamar a leer_license al hacer clic
     lbl_licencia.bind("<Button-1>", lambda e: leer_license())
 
 
+    ## Version
+    lbl_version = tk.Label(ventana, text=current_version, font=("Arial", 9), fg="black")    
+    lbl_version.place(relx=1.0, rely=1.0, anchor="se", x=-margin, y=-25)
 
 
     ## Instructions
-    #lbl_instructions = tk.Label(ventana, text=instructions_text, font=("Arial", 9), fg=link_color, cursor="hand2", bg=ventana.cget('bg'))
     lbl_instructions = tk.Label(ventana, text=instructions_text, font=("Arial", 9, "bold"), fg="black", cursor="hand2", bg=ventana.cget('bg'), relief="raised", bd=2, padx=5, pady=5)
 
-    lbl_instructions.place(relx=0.0, rely=1.0, anchor="sw", x=margen-10, y=-5)
+    lbl_instructions.place(relx=0.0, rely=1.0, anchor="sw", x=margin-10, y=-5)
     # Abrir la pagina de instruciones al hacer click
-    lbl_instructions.bind("<Button-1>", lambda e: open_web_page(f'https://github.com/JoseChirif/Mass-file-renaming-with-excel/tree/main/instructions/Instructions%20-%20{idioma}.md', 'https://github.com/JoseChirif/Mass-file-renaming-with-excel/tree/main/instructions/Instructions%20-%20en.md','https://github.com/JoseChirif/Mass-file-renaming-with-excel','https://github.com/JoseChirif?tab=repositories', 'https://github.com/JoseChirif'))
+    lbl_instructions.bind("<Button-1>", lambda e: get_instructions(idioma))
     
-    #### PENDIENTE LINK A README Y UPDATE
+    
     
     
     
     ## CONFIGURACIONES FINALES
-    ventana.bind("<Configure>", lambda event: ajustar_texto(event, lbl_project_title, lbl_menu, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content, margen=20))
+    ventana.bind("<Configure>", lambda event: adjust_text(event, lbl_project_title, lbl_menu, btn_opcion_1, btn_opcion_2, btn_opcion_3, lbl_project_title_notes_content, lbl_notes_content, margin=20))
     
     ventana.mainloop()
 
@@ -291,4 +321,6 @@ def menu_principal():
     
 # Llamada para crear la interfaz gráfica   
 if __name__ == "__main__":
-    menu_principal()
+    main_menu()
+    
+    

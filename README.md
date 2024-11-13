@@ -1,4 +1,4 @@
-<h1> <img src="https://raw.githubusercontent.com/JoseChirif/Mass-file-renaming-with-excel/refs/heads/main/assets/icon.png" width="20" height="20" />  MASS FILE RENAMING WITH EXCEL </h1>
+<h1> <img src="https://raw.githubusercontent.com/JoseChirif/Mass-file-renaming-with-excel/refs/heads/main/assets/icon.png" width="20" height="20" loading="lazy"/>  MASS FILE RENAMING WITH EXCEL </h1>
 
 
 Generate an automatic excel template with the name of all files in the same folder of your project. Then, rename all of them with one click (as the new value you assing in the excel).
@@ -7,85 +7,191 @@ Generate an automatic excel template with the name of all files in the same fold
 
   <!--- Badges /> --->
 <p align="center">
-  <img src="https://img.shields.io/github/languages/top/JOSECHIRIF/Mass-file-renaming" alt="Languages" />
+  <img src="https://img.shields.io/github/languages/top/JOSECHIRIF/Mass-file-renaming" alt="Languages" loading="lazy"/>
   &nbsp;
-  <img src="https://img.shields.io/badge/python-3.11.5-blue" alt="Python version" />
+  <img src="https://img.shields.io/badge/python-3.11.5-blue" alt="Python version" loading="lazy"/>
   &nbsp;
-  <img src="https://img.shields.io/github/license/JoseChirif/Mass-file-renaming-with-excel" alt="License" />
+  <img src="https://img.shields.io/github/license/JoseChirif/Mass-file-renaming-with-excel" alt="License" loading="lazy"/>
   &nbsp;
-  <img src="https://img.shields.io/github/release/JoseChirif/Mass-file-renaming-with-excel" alt="release" />
+  <img src="https://img.shields.io/github/release/JoseChirif/Mass-file-renaming-with-excel" alt="release" loading="lazy"/>
 </p>
 
 <br>
 
 
 # 🛠️ SETUP
-**Steps to setup the program:**
 
-1. Download the last release.rar
+### 1. Download
 
-<table>
-  <tr>
-  <td><img src="https://github.com/user-attachments/assets/b34da49e-b074-4c95-a122-f77645adba06" alt="go to release section" /></td>
-  <td><img src="https://github.com/user-attachments/assets/6f47e0fd-77bd-46be-b62e-c9e666084d09" alt="download the last rar file" /></td>
-  </tr>
-</table>
-
-2. Extract the .rar program
-
-3. Install virtual environment with command `python -m venv venv`
-
-4. Activate the virtual environment with `venv\Scripts\activate`
-
-5. Install dependencies from requirements.txt: `pip install -r requirements.txt` (check that your venv is active).
-
-<br>
-
-**Then you have 2 options:**
-  
-<!-- Option a: Make a .exe file - RECOMMENDED (Click here):START -->
+<!-- Option a: Download the last release -->
 <details>
   <summary>
-    Option a: Make a .exe file - RECOMMENDED (Click here)
+    Option a: Download the last release
   </summary>
   <br>
 
-  <ol start="6">
-    <li>Run: <code>pyinstaller --onefile --windowed --clean --noupx --add-data "assets/*;assets" --add-data "config/*;config" --add-data "functions/*;functions" --add-data "locales/*;locales" --add-data "src/*;src" --add-data "LICENSE.txt;." --add-data "README.md;." --icon "assets/icon.ico" --name "0 rename.exe" run.py</code></li><br>
-    <li>Then the folder dist will be created in the project's folder. Inside is the exe file.
+  <ol>
+    <li>Download the last release.rar
+      <table>
+        <tr>
+        <td><img src="https://github.com/user-attachments/assets/b34da49e-b074-4c95-a122-f77645adba06" alt="go to release section" loading="lazy"/></td>
+        <td><img src="https://github.com/user-attachments/assets/6f47e0fd-77bd-46be-b62e-c9e666084d09" alt="download the last rar file" loading="lazy"/></td>
+        </tr>
+      </table>
+    </li>
+    <li>Extract the .rar program
+    </li>
   </ol>
 
-  <img src="https://github.com/user-attachments/assets/d6bbdbcc-7d98-4fc1-a4cc-5d4c4fff7511" alt="dist folder">
-<hr>
 </details>
 <br>
-<!-- Option a: Make a .exe file - RECOMMENDED (Click here):END -->
+<!-- Option a: Download the last release:END -->
 
 
-
-
-<!-- Option b: Execute from python (Click here):START -->
+<!-- Option b: Clone the repository -->
 <details>
   <summary>
-    Option b: Execute from python (Click here)
+    Option b: Clone the repository
   </summary>
   <br>
 
-  <ol start="6">
-    <li>Execute run.py to enter the main menu: <code>python run.py</code></li><br>
+  <ol>
+    <li>Clone the repository with the command: <pre><code>git clone https://github.com/JoseChirif/Mass-file-renaming-with-excel.git </code></pre>
+    </li>
+
+  </ol>
+
+</details>
+<br>
+<!-- Option b: Clone the repository:END -->
+
+
+
+
+
+### 2. Install requirements
+
+<ol>
+ <li> Install virtual environment with command <pre><code>python -m venv venv</code></pre> </li>
+
+<li> Activate the virtual environment with <pre><code>venv\Scripts\activate</code></pre> </li>
+
+<li> Install dependencies from requirements.txt: <pre><code>pip install -r requirements.txt</code></pre>  (check that your venv is active). </li>
+
+</ol>
+<br>
+
+
+
+### 3. Execute
+  
+<!-- Option a: Make a onefile.exe file - RECOMMENDED (Click here):START -->
+<details>
+  <summary>
+    Option a: Make a onefile.exe file - RECOMMENDED (Click here)
+  </summary>
+  <br>
+
+  <ol>
+    <li>Run: <pre><code>build_exe.py</code></pre>
+      or Run: <pre><code>pyinstaller --onefile --windowed --clean --noupx `
+  --add-data "assets/*;assets" `
+  --add-data "config/*;config" `
+  --add-data "functions/*;functions" `
+  --add-data "instructions/*;instructions" `
+  --add-data "locales/*;locales" `
+  --add-data "src/*;src" `
+  --add-data "LICENSE.txt;." `
+  --add-data "README.md;." `
+  --add-data "instructions/styles/styles.css;instructions/styles" `
+  --add-data "instructions/pictures/1 - Move to folder.png;instructions/pictures" `
+  --add-data "instructions/pictures/2 - Main menu.png;instructions/pictures" `
+  --add-data "instructions/pictures/3 - excel template.png;instructions/pictures" `
+  --add-data "instructions/pictures/4 - Flash fill excel.gif;instructions/pictures" `
+  --add-data "instructions/pictures/5 - renaming.png;instructions/pictures" `
+  --add-data "instructions/pictures/6 - options to modify names.png;instructions/pictures" `
+  --icon "assets/icon.ico" `
+  --name "0 rename.exe" `
+  "run.py"</code></pre>
+    </li><br>
+
+  <li>Then a "dist" folder will be created in the project's directory, containing a "0 rename.exe" folder. Inside it, you will find the .exe file and the "_internal" folder.
+    <img src="https://github.com/user-attachments/assets/5ed0fc2a-7e48-49bd-a0b9-f7b8a4ea2181" alt="dist folder with dependecies" loading="lazy">
+  </li>
+
+  </ol>
+
+</details>
+<br>
+<!-- Option a: Make a onefile.exe file - RECOMMENDED (Click here):END -->
+
+
+
+<!-- Option b: Make a .exe file with dependencies (Click here):START -->
+<details>
+  <summary>
+    Option b: Make a .exe file with dependencies (Click here)
+  </summary>
+  <br>
+
+  <ol>
+    <li>Run: <pre><code>pyinstaller --windowed --clean --noupx `
+  --add-data "assets/*;assets" `
+  --add-data "config/*;config" `
+  --add-data "functions/*;functions" `
+  --add-data "instructions/*;instructions" `
+  --add-data "locales/*;locales" `
+  --add-data "src/*;src" `
+  --add-data "LICENSE.txt;." `
+  --add-data "README.md;." `
+  --add-data "instructions/styles/styles.css;instructions/styles" `
+  --add-data "instructions/pictures/1 - Move to folder.png;instructions/pictures" `
+  --add-data "instructions/pictures/2 - Main menu.png;instructions/pictures" `
+  --add-data "instructions/pictures/3 - excel template.png;instructions/pictures" `
+  --add-data "instructions/pictures/4 - Flash fill excel.gif;instructions/pictures" `
+  --add-data "instructions/pictures/5 - renaming.png;instructions/pictures" `
+  --add-data "instructions/pictures/6 - options to modify names.png;instructions/pictures" `
+  --icon "assets/icon.ico" `
+  --name "0 rename.exe" `
+  "run.py"</code></pre>
+    </li><br>
+
+  <li>Then the folder "dist" will be created in the project's folder. Inside is the .exe file with the folder "_internal".
+    <img src="https://github.com/user-attachments/assets/1bf41ab5-db6b-4581-afc0-1b2921df1242" alt="dist folder" loading="lazy">
+  </li>
+  <li>Move and keep .exe file with the folder "_internal" together all the time. <strong>The .exe file won't work if the "_internal" folder is not in the same directory.</strong></li>
+
+  </ol>
+
+</details>
+<br>
+<!-- Option b: Make a .exe file with dependencies (Click here):END -->
+
+
+
+
+<!-- Option c: Execute from python (Click here):START -->
+<details>
+  <summary>
+    Option c: Execute from python (Click here)
+  </summary>
+  <br>
+
+  <ol>
+    <li>Execute run.py to enter the main menu: 
+      <pre><code>python run.py</code></pre>
+    </li><br>
     <li><p><strong>Scripts will modify the name of files in project's parent directory instead of where the executable is.</strong></p></li>
+    <img src="https://github.com/user-attachments/assets/5550e35f-2d79-4afd-bb6a-b61d27045e82" alt="father's directory" loading="lazy">
+
   </ol>
   
-  <img src="https://github.com/user-attachments/assets/5550e35f-2d79-4afd-bb6a-b61d27045e82" alt="father's directory">
 
-  <!---
-  <img src="https://github.com/user-attachments/assets/efa73448-b450-4e51-a26c-c2f8ebb882a7" alt="father's directory">
-  --->
-
-  
+    
 </details>
 <br>
-<!-- Option b: Execute from python (Click here):END -->    
+<!-- Option c: Execute from python (Click here):END -->    
+
 
 
 # 🌐 LANGUAGES (instructions):
@@ -93,10 +199,12 @@ Generate an automatic excel template with the name of all files in the same fold
 
 - [Instrucciones en **ESPAÑOL** (click here)](https://github.com/JoseChirif/Mass-file-renaming/blob/main/instructions/Instructions%20-%20es.md)
 
+<br>
 
 # 📑 INSTRUCTIONS
   1. Move the executable to the folder where the files you want to modify are located.
     ![move_to_folder](https://github.com/user-attachments/assets/a186ba66-b2f7-452f-8797-4f054907d76f)
+    **If you created the folder "_internal", move it together.**
 
   2. With the main menu open you can run all scripts.
     ![Main menu](https://github.com/user-attachments/assets/74ce9fb0-3c13-4362-8180-7c721d530cb4)
@@ -106,9 +214,9 @@ Generate an automatic excel template with the name of all files in the same fold
 
   4. Fill column C of the excel with new names (or leave it empty if you don't wanna change the name).
     ![Flash fill excel](https://github.com/user-attachments/assets/ec5e8c1a-dc87-49f7-bff6-abe98b32a57c)
-    **Tips:** 
-    - If there is a regex, made 2 or 3 examples and use excel flash fill.
-    - If you want to unlock the sheet to use more columns, click on the 3rd button of the main menu does it.
+  >    **Tips:** 
+  >    - If there is a regex, made 2 or 3 examples and use excel flash fill.
+  >    - If you want to unlock the sheet to use more columns, click on the 3rd button of the main menu does it.
 
   5. The second button will change the original name of all files with the new name assings in the column C of the excel.
     ![renaming](https://github.com/user-attachments/assets/e8aa9663-363b-4297-aa6f-55cae6d83c77)
@@ -119,8 +227,10 @@ Generate an automatic excel template with the name of all files in the same fold
   - Option 1: Made a new folder (with the same name as the project) and copy all the files with the new name.
   - Option 2: Overwrite the files with the new names.
 
+  Choose the option that you prefeer.
 
-**DONE, you made it well!**
+
+**WELL DONE, files has been renamed successfully!**
 
 
 
@@ -130,7 +240,6 @@ Generate an automatic excel template with the name of all files in the same fold
 ## 🚀 About me
 I'm an Industrial Engineer specialized in process optimization, business intelligence and data science.
 [Porfolio - Network - Contact](https://linktr.ee/jchirif)
-
 
 
 

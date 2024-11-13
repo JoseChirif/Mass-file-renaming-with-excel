@@ -1,4 +1,4 @@
-# Importar librerias para manejar carpetas y archivos
+# IMPORT LIBRARIES
 import os
 import pandas as pd
 import tkinter as tk
@@ -6,539 +6,866 @@ from tkinter import messagebox
 from openpyxl import load_workbook
 from openpyxl.styles import Font, Protection
 import sys
+import tempfile
 import shutil
 import webbrowser
 import json
 import requests
 
 
-## FUNCIONES DIRIGIRSE A CARPETAS/DIRECTORIOS
-#Obtner el direrctorio (utilizar directorio padre para crear el ejecutable, sino marcara error)
-def directorio_a_trabajar():
+# FUNCTIONS TO MANAGE FILES AND FOLDERS
+
+def working_directory():
     """
-    Esta función obtiene el directorio padre del proyecto (3 carpetas padre a partir de functions.py).
-    """
-    if hasattr(sys, 'frozen'):
-        # Si está ejecutándose como un ejecutable, obtenemos la carpeta del ejecutable
-        directorio = os.path.dirname(sys.executable)
-    else:
-        # Si está ejecutándose como un script normal
-        directorio = os.path.abspath(os.path.join(__file__, *(['..'] * 3)))
-    
-    return directorio  # Debe devolver el directorio
+    Returns the path to the project's parent directory. If the script is bundled into an executable, it returns the executable's directory.
 
-
-
-def directorio_proyecto():
-    """
-    Esta función obtiene el directorio del proyecto (carpetas padre a partir de functions.py).
-    """
-    if hasattr(sys, '_MEIPASS'):
-        # Si está ejecutándose como un ejecutable, se usa el directorio temporal
-        directorio_proyecto = sys._MEIPASS
-    else:
-        # Si está ejecutándose como un script normal
-        directorio_proyecto = os.path.abspath(os.path.join(__file__, *(['..'] * 2)))
-    
-    return directorio_proyecto  # Debe devolver el directorio
-
-
-
-def obtener_nombre_archivo_o_directorio():
-    """Get the name of executable file or project directory 
+    Args:
+        None
 
     Returns:
-        str: name of executable file or project directory
+        str: Path to the parent directory of the project or the directory of the executable if running as a bundled application.
+    """
+    if hasattr(sys, 'frozen'):
+        # If the script is bundled into an executable, it returns the directory of the executable.
+        directory = os.path.dirname(sys.executable)
+    else:
+        # If running as a normal script, it returns the parent directory of the project
+        directory = os.path.abspath(os.path.join(__file__, *(['..'] * 3)))
+    
+    return directory  # Returns the directory
+
+
+
+def project_directory():
+    """
+    Retrieves the path to the project directory, adjusting based on the execution context.
+
+    Args:
+        None
+
+    Returns:
+        str: The path to the project directory. If running as a bundled executable, returns the temporary directory; otherwise, returns the actual project directory path.
+    """
+    if hasattr(sys, '_MEIPASS'):
+        # If running as a bundled executable, use the temporary directory
+        project_directory = sys._MEIPASS
+    else:
+        # If running as a normal script, get the project directory
+        project_directory = os.path.abspath(os.path.join(__file__, *(['..'] * 2)))
+    
+    return project_directory  # Return the project directory
+
+
+
+def get_filename_or_directory():
+    """
+    Retrieves the name of the executable file if bundled, or the project directory if running as a script.
+
+    Args:
+        None
+
+    Returns:
+        str: Name of the executable file or project directory, depending on the execution context.
     """
     if getattr(sys, 'frozen', False):
-        # Estás ejecutando desde un .exe
+        # If the script is bundled into an executable
         return os.path.basename(sys.executable)
     else:
-        # Si estás ejecutando desde un script Python obtiene el nombre del directorio
-        return os.path.basename(directorio_proyecto()).rstrip("/").rstrip("\\")
+        # If running as a normal script gets the directory name
+        return os.path.basename(project_directory()).rstrip("/").rstrip("\\")
     
     
-## FUNCIONES SCRIPTS
+# FUNCTIONS INTO SCRIPTS
 def choose_language():
-    # Obtener el idioma desde los argumentos de línea de comandos
-    language = "es"  # Idioma por defecto
+    """
+    Retrieves the language from the command line arguments. Defaults to English if no argument is provided.
+
+    Args:
+        None
+
+    Returns:
+        str: The selected language. Default is "en" if no language argument is provided.
+    """
+    # Get the language from the command line arguments
+    language = "en"  # Default language
     if len(sys.argv) > 1:
-        language = sys.argv[1]  # Tomar el argumento si se proporciona
-        
+        language = sys.argv[1]  # Take the argument if provided
+    
     return language
 
 
-        
-        
-def cargar_lista_de_lenguajes():
-    # Obtener el directorio base del proyecto
-    directorio_del_proyecto = directorio_proyecto() 
-    # Cargar el diccionario de idiomas desde el archivo JSON
-    ruta_json = os.path.join(directorio_del_proyecto, 'locales', 'languages.json')
-    with open(ruta_json, 'r', encoding='utf-8') as archivo:
-        return json.load(archivo)
-    
-    
-def cargar_traducciones(idioma):
-    """Carga las traducciones desde un archivo JSON según el idioma especificado.
+
+
+def get_instructions(language):
+    """
+    Opens an Excel file, displays notes in column E, unlocks specified rows, and applies sheet protection.
 
     Args:
-        idioma (str): El código del idioma (por ejemplo, 'es' para español).
+        excel_file_path (str): Path to the Excel file to be modified.
+        additional_rows_to_unlock (int): Additional number of rows to unlock beyond those in the DataFrame.
+        notes_title (str): Title for the notes in cell E2.
+        excel_note1 (str): First note to display in cell E3.
+        excel_note2 (str): Second note to display in cell E4.
+        excel_note3 (str): Third note to display in cell E5.
+        excel_note4 (str): Fourth note to display in cell E6.
+        excel_note5 (str): Fifth note to display in cell E7.
 
     Returns:
-        dict: Un diccionario con las traducciones.
+        None: Saves the modified Excel file with notes and protection settings.
+
+    Raises:
+        FileNotFoundError: If the specified Excel file path does not exist.
+        PermissionError: If there is an issue with file access or write permissions.
     """
-    # Obtener el directorio base del proyecto
-    directorio_del_proyecto = directorio_proyecto() 
-    # Construir la ruta hacia el archivo JSON del idioma
-    ruta_json_idioma = os.path.join(directorio_del_proyecto, 'locales', f'{idioma}.json')
-    ruta_json_en = os.path.join(directorio_del_proyecto, 'locales', 'en.json')
+    # Get the base directory of the project
+    project_directory_path = project_directory()
 
-    # Cargar las traducciones del idioma especificado
-    traducciones = {}
+    # Check if we're in a bundled (PyInstaller) environment
+    if hasattr(sys, '_MEIPASS'):
+        # Use the temporary directory to copy the files
+        temp_dir = tempfile.mkdtemp()
+
+        # Path to the instructions HTML file in the specified language
+        instructions_path = os.path.join(sys._MEIPASS, 'instructions', f'Instructions - {language}.html')
+        # If the file in the desired language is not found, use the English file
+        if not os.path.exists(instructions_path):
+            instructions_path = os.path.join(sys._MEIPASS, 'instructions', 'Instructions - en.html')
+
+        # Copy the HTML file and CSS to the temporary directory
+        shutil.copy(instructions_path, temp_dir)
+        css_path = os.path.join(sys._MEIPASS, 'instructions', 'styles', 'styles.css')
+        if os.path.exists(css_path):
+            os.makedirs(os.path.join(temp_dir, 'styles'), exist_ok=True)
+            shutil.copy(css_path, os.path.join(temp_dir, 'styles'))
+
+        # Copy all images to the temporary directory
+        pictures_path = os.path.join(sys._MEIPASS, 'instructions', 'pictures')
+        temp_pictures_dir = os.path.join(temp_dir, 'pictures')
+        os.makedirs(temp_pictures_dir, exist_ok=True)
+        for image_name in [
+            '1 - Move to folder.png',
+            '2 - Main menu.png',
+            '3 - excel template.png',
+            '4 - Flash fill excel.gif',
+            '5 - renaming.png',
+            '6 - options to modify names.png'
+        ]:
+            image_path = os.path.join(pictures_path, image_name)
+            if os.path.exists(image_path):
+                shutil.copy(image_path, temp_pictures_dir)
+
+        # New path for the HTML file in the temporary directory
+        instructions_path = os.path.join(temp_dir, os.path.basename(instructions_path))
     
-    # Intentar cargar el archivo del idioma
-    if os.path.exists(ruta_json_idioma):
-        with open(ruta_json_idioma, 'r', encoding='utf-8') as archivo:
-            traducciones = json.load(archivo)
+    else:
+        # In development environment, the path is relative to the project directory
+        instructions_path = os.path.join(project_directory_path, 'instructions', f'Instructions - {language}.html')
+        # If the file in the desired language is not found, use the English file
+        if not os.path.exists(instructions_path):
+            instructions_path = os.path.join(project_directory_path, 'instructions', 'Instructions - en.html')
+
+    # Try to open the file in the browser
+    try:
+        # Open the file in the default web browser
+        webbrowser.open(f'file:///{os.path.abspath(instructions_path)}')
+
+        # Return the content of the file
+        with open(instructions_path, 'r', encoding='utf-8') as file:
+            return file.read()  # Return the content of the file
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Instructions file not found: {instructions_path}")
+    except Exception as e:
+        raise Exception(f"Error opening instructions file: {e}")
+
+
+
+
     
-    # Cargar el archivo en.json para valores por defecto
-    with open(ruta_json_en, 'r', encoding='utf-8') as archivo:
-        traducciones_en = json.load(archivo)
-
-    # Reemplazar las traducciones faltantes por las del inglés
-    for clave in traducciones_en:
-        if clave not in traducciones:
-            traducciones[clave] = traducciones_en[clave]
-
-    return traducciones
-
-
-# Función para preguntar al usuario si desea reemplazar el archivo
-def preguntar_reemplazo(file_already_exist_title, file_already_exist_message):
+    
+    
+        
+def load_available_languages():
     """
-    Si existe un archivo con el mismo nombre, preguntará si deseo reemplazarlo (tkinter).
+    Loads the available languages from a JSON file located in the 'locales' folder of the project's.
+    
+    Args:
+        None
+
+    Returns:
+        dict: A dictionary containing the available languages and their corresponding details.
+    """
+    # Get the base directory of the project
+    project_directory_path = project_directory() 
+    # Load the languages dictionary from the JSON file
+    json_path = os.path.join(project_directory_path, 'locales', 'languages.json')
+    with open(json_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+    
+    
+    
+    
+def load_translations(language):
+    """
+    Loads translations from a JSON file based on the specified language.
+
+    Args:
+        language (str): The language code (e.g., 'es' for Spanish).
+
+    Returns:
+        dict: A dictionary with the translations for the specified language.
+    """
+    # Get the base directory of the project
+    project_directory_path = project_directory() 
+    # Build the path to the language-specific JSON file
+    language_json_path = os.path.join(project_directory_path, 'locales', f'{language}.json')
+    english_json_path = os.path.join(project_directory_path, 'locales', 'en.json')
+
+    # Load the translations for the specified language
+    translations = {}
+    
+    # Attempt to load the language file
+    if os.path.exists(language_json_path):
+        with open(language_json_path, 'r', encoding='utf-8') as file:
+            translations = json.load(file)
+    
+    # Load the default English translations (en.json)
+    with open(english_json_path, 'r', encoding='utf-8') as file:
+        english_translations = json.load(file)
+
+    # Replace missing translations with the English defaults
+    for key in english_translations:
+        if key not in translations:
+            translations[key] = english_translations[key]
+
+    return translations
+
+
+
+
+def ask_replace(file_already_exist_title, file_already_exist_message):
+    """
+    If a file with the same name exists, asks if the user wants to replace it (using tkinter).
+
+    Args:
+        file_already_exist_title (str): The title of the message box.
+        file_already_exist_message (str): The message displayed in the message box.
+
+    Returns:
+        bool: True if the user selects "Yes", False if the user selects "No".
     """
     root = tk.Tk()
-    root.withdraw()  # Oculta la ventana principal
+    root.withdraw()  # Hides the main window
     return messagebox.askyesno(file_already_exist_title, file_already_exist_message)
 
-# Función para mostrar un mensaje de error
-def mostrar_error(error_title ,error_message):
+
+
+def show_error(error_title, error_message):
     """
-    Muestra un mensaje de error con tkinter
+    Displays an error message using tkinter.
+
+    Args:
+        error_title (str): The title of the error message box.
+        error_message (str): The error message displayed in the message box.
+
+    Returns:
+        None
     """
     root = tk.Tk()
-    root.withdraw()  # Oculta la ventana principal
+    root.withdraw()  # Hides the main window
     messagebox.showerror(error_title, error_message)
     
 
-def mostrar_mensaje(titulo, mensaje):
-    # Crear una ventana oculta
+def show_message(title, message):
+    """
+    Displays a message in a popup window using tkinter. If the message is a DataFrame, it converts it to a string.
+
+    Args:
+        title (str): The title of the popup window.
+        message (str or pd.DataFrame): The message to display. If a DataFrame is provided, it will be converted to a string.
+
+    Returns:
+        None: This function does not return anything.
+
+    Raises:
+        None: This function does not raise any exceptions.
+    """
+    # Create a hidden window
     root = tk.Tk()
-    root.withdraw()  # Ocultar la ventana principal
-    # Convertir el mensaje a string si es un DataFrame
-    if isinstance(mensaje, pd.DataFrame):
-        mensaje = mensaje.to_string()  # Convertir DataFrame a string
-    # Mostrar el mensaje en una ventana emergente
-    messagebox.showinfo(titulo, mensaje)
-    # Cerrar la ventana después de que se cierre el mensaje
+    root.withdraw()  # Hide the main window
+    # Convert the message to a string if it is a DataFrame
+    if isinstance(message, pd.DataFrame):
+        message = message.to_string()  # Convert DataFrame to string
+    # Display the message in a popup window
+    messagebox.showinfo(title, message)
+    # Close the window after the message is closed
     root.destroy()
 
 
 
-#Función para modificar el excel con el DF
-def modificar_excel_dataframe(nombre_archivo_excel_ruta, filas_adicionales_a_desbloquear, notas_titulo, excel_note1, excel_note2, excel_note3, excel_note4, excel_note5):
-    # Abrir el archivo Excel para mostrar una nota en la celda E2
-    wb = load_workbook(nombre_archivo_excel_ruta)
-    ws = wb.active  # Selecciona la primera hoja de trabajo (la activa)
 
-    # Escribir notas en la columna E
-    ws['E2'] = notas_titulo
-    ws['E2'].font = Font(bold=True)  # Aplicar formato en negrita
+def modify_excel_dataframe(excel_file_path, additional_rows_to_unlock, notes_title, excel_note1, excel_note2, excel_note3, excel_note4, excel_note5):
+    """
+    Opens an Excel file, displays notes in column E, unlocks specified rows, and applies sheet protection.
+
+    Args:
+        excel_file_path (str): The path to the Excel file to modify.
+        additional_rows_to_unlock (int): The number of additional rows to unlock beyond the DataFrame's rows.
+        notes_title (str): The title note to display in cell E2.
+        excel_note1 (str): The note to display in cell E3.
+        excel_note2 (str): The note to display in cell E4.
+        excel_note3 (str): The note to display in cell E5.
+        excel_note4 (str): The note to display in cell E6.
+        excel_note5 (str): The note to display in cell E7.
+
+    Returns:
+        None: This function does not return anything.
+    """
+    # Open the Excel file to display a note in cell E2
+    wb = load_workbook(excel_file_path)
+    ws = wb.active  # Select the first worksheet (active sheet)
+
+    # Write notes in column E
+    ws['E2'] = notes_title
+    ws['E2'].font = Font(bold=True)  # Apply bold formatting
     ws['E3'] = excel_note1
     ws['E4'] = excel_note2
     ws['E5'] = excel_note3
     ws['E6'] = excel_note4
     ws['E7'] = excel_note5
 
-    # Protección de la hoja
-    #1048576 filas = el excel default. Para asegurar desbloquear la hoja completa. Valido no pasar el límite
-    if ws.max_row >=1048576-filas_adicionales_a_desbloquear: 
-        ws.max_row =1048576-filas_adicionales_a_desbloquear
-    # Desbloquear las filas del df + filas adicionales     
-    for row in ws.iter_rows(min_row=1, max_row=ws.max_row + filas_adicionales_a_desbloquear, min_col=1, max_col=16):
+    # Sheet protection
+    # 1,048,576 rows is the default Excel limit. Ensure the sheet is unlocked without exceeding the limit.
+    if ws.max_row >= 1048576 - additional_rows_to_unlock:
+        ws.max_row = 1048576 - additional_rows_to_unlock
+    # Unlock the rows in the DataFrame + additional rows
+    for row in ws.iter_rows(min_row=1, max_row=ws.max_row + additional_rows_to_unlock, min_col=1, max_col=16):
         for cell in row:
             cell.protection = Protection(locked=False)
-            
-    # Bloquear las celdas A1, B1 y C1
+    
+    # Lock cells A1, B1, and C1
     for cell in ['A1', 'B1', 'C1']:
         ws[cell].protection = Protection(locked=True)
 
-    # Habilitar la protección de la hoja
+    # Enable sheet protection
     ws.protection.sheet = True
 
-    # Permitir ciertas acciones en la hoja
-    ws.protection.sort = False           # Permitir ordenar
-    ws.protection.autoFilter = False      # Permitir filtros automáticos
-    ws.protection.insertRows = False      # Permitir insertar filas
-    ws.protection.deleteRows = False      # Permitir eliminar filas
-    ws.protection.insertColumns = False    # Permitir insertar columnas
-    ws.protection.deleteColumns = False    # Permitir eliminar columnas
-    ws.protection.formatColumns = False    # Permitir cambiar el formato de columnas
-    ws.protection.formatRows = False       # Permitir cambiar el formato de filas
+    # Allow specific actions on the sheet
+    ws.protection.sort = False           # Allow sorting
+    ws.protection.autoFilter = False     # Allow autofilters
+    ws.protection.insertRows = False     # Allow row insertion
+    ws.protection.deleteRows = False     # Allow row deletion
+    ws.protection.insertColumns = False  # Allow column insertion
+    ws.protection.deleteColumns = False  # Allow column deletion
+    ws.protection.formatColumns = False  # Allow column formatting
+    ws.protection.formatRows = False     # Allow row formatting
 
-
-
-    # Guardar el archivo modificado
-    wb.save(nombre_archivo_excel_ruta)
+    # Save the modified file
+    wb.save(excel_file_path)
     wb.close()
 
     
     
-#Función para modificar el excel con el DF
-def desbloquear_proteccion_excel(nombre_archivo_excel_ruta):
+
+def unlock_excel_sheet(excel_path):
+    """
+    Disables the protection of an Excel sheet.
+
+    Args:
+        excel_path (str): The path to the Excel file to be modified.
+
+    Returns:
+        None
+    """
     # Abrir el archivo Excel para mostrar una nota en la celda E2
-    wb = load_workbook(nombre_archivo_excel_ruta)
+    wb = load_workbook(excel_path)
     ws = wb.active  # Selecciona la primera hoja de trabajo (la activa)
 
     # Deshabilitar la protección de la hoja
     ws.protection.sheet = False
 
     # Guardar el archivo modificado
-    wb.save(nombre_archivo_excel_ruta)
+    wb.save(excel_path)
     wb.close()
-    
   
 
   
-def eliminar_desde_ultimo_punto(archivo):
-    # Encontrar la posición del último punto
-    indice_punto = archivo.rfind('.')
+def delete_extention(filename):
+    """
+    Removes the extension from a given filename.
+
+    Args:
+        filename (str): The name of the file including its extension.
+
+    Returns:
+        str: The filename without its extension.
+    """
+    # Find the position of the last dot
+    dot_index = filename.rfind('.')
     
-    # Si no hay punto en la cadena, devolver la cadena completa
-    if indice_punto == -1:
-        return archivo
+    # If there is no dot in the string, return the full string
+    if dot_index == -1:
+        return filename
     else:
-        # Devolver la cadena desde el inicio hasta el último punto
-        return archivo[:indice_punto]
+        # Return the string from the beginning up to the last dot
+        return filename[:dot_index]
 
 
 
 
-# Función para mostrar las opciones
-def mostrar_opciones(titulo, opcion1, opcion2, borde1, borde2, cancel_title):
+
+def show_options(title, option1, option2, border1, border2, cancel_title):
     """
-    Muestra una ventana de opciones con dos botones.
-    Al seleccionar una opción, devuelve el número de la opción seleccionada (1 o 2).
-    Si se cancela, cierra solo la ventana de opciones sin afectar otras ventanas.
-    """
-    def cancelar_operacion_actual():
-        """
-        Esta subfunción cancela la operación y cierra solo la ventana actual de opciones.
-        """
-        global ventana_opciones
-        if ventana_opciones:
-            ventana_opciones.destroy()  # Cierra la ventana de opciones
-        
-        
-    def seleccionar_opcion(nro_opcion):
-        """Sub-función para manejar la selección de la opción."""
-        nonlocal resultado
-        resultado = nro_opcion
-        cancelar_operacion_actual()
-        ventana_opciones.quit()  # Cierra la ventana de opciones
+    Displays an options window with two buttons.
+    Upon selecting an option, returns the number of the selected option (1 or 2).
+    If canceled, closes only the options window without affecting other windows.
 
-    global ventana_opciones
-    ventana_opciones = tk.Toplevel()  # Crear una ventana secundaria
-    ventana_opciones.title(titulo)  # Establecer el título de la ventana
+    Args:
+        title (str): The title of the options window.
+        option1 (str): The text for the first option button.
+        option2 (str): The text for the second option button.
+        border1 (str): The color of the border for the first option frame.
+        border2 (str): The color of the border for the second option frame.
+        cancel_title (str): The text for the cancel button.
+
+    Returns:
+        int: The selected option (1 or 2) or None if canceled.
+    """
+    def cancel_current_operation():
+        """
+        This sub-function cancels the operation and closes only the current options window.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        global options_window
+        if options_window:
+            options_window.destroy()  # Closes the options window
+        
+    def select_option(option_number):
+        """
+        Sub-function to handle option selection.
+
+        Args:
+            option_number (int): The number of the selected option (1 or 2).
+
+        Returns:
+            None
+        """
+        nonlocal result
+        result = option_number
+        cancel_current_operation()
+        options_window.quit()  # Closes the options window
+
+    global options_window
+    options_window = tk.Toplevel()  # Create a secondary window
+    options_window.title(title)  # Set the window title
     
-   # Agregar el icono a la ventana
-    ventana_opciones.iconbitmap(relative_route_to_file("assets", "icon.ico"))
+    # Add the icon to the window
+    options_window.iconbitmap(relative_route_to_file("assets", "icon.ico"))
 
-    # Variable para almacenar el resultado de la selección
-    resultado = None
+    # Variable to store the result of the selection
+    result = None
 
-    # Manejar el botón de cerrar (X) de la ventana
-    ventana_opciones.protocol("WM_DELETE_WINDOW", cancelar_operacion_actual)
+    # Handle the close (X) button of the window
+    options_window.protocol("WM_DELETE_WINDOW", cancel_current_operation)
 
-    # Marco para la primera opción
-    frame1 = tk.Frame(ventana_opciones, highlightbackground=borde1, highlightthickness=2)
+    # Frame for the first option
+    frame1 = tk.Frame(options_window, highlightbackground=border1, highlightthickness=2)
     frame1.pack(pady=20, padx=20)
     
-    boton1 = tk.Button(frame1, text=opcion1, font=("Arial", 10), borderwidth=0, relief="flat",
-                       bg="white", activebackground="lightgrey", 
-                       padx=15, pady=10,  # Padding
-                       command=lambda: seleccionar_opcion(1))
-    boton1.pack()
+    button1 = tk.Button(frame1, text=option1, font=("Arial", 10), borderwidth=0, relief="flat",
+                        bg="white", activebackground="lightgrey", 
+                        padx=15, pady=10,  # Padding
+                        command=lambda: select_option(1))
+    button1.pack()
 
-    # Marco para la segunda opción
-    frame2 = tk.Frame(ventana_opciones, highlightbackground=borde2, highlightthickness=2)
+    # Frame for the second option
+    frame2 = tk.Frame(options_window, highlightbackground=border2, highlightthickness=2)
     frame2.pack(pady=20, padx=20)
 
-    boton2 = tk.Button(frame2, text=opcion2, font=("Arial", 10), borderwidth=0, relief="flat",
-                       bg="white", activebackground="lightgrey", 
-                       padx=15, pady=10,  # Padding
-                       command=lambda: seleccionar_opcion(2))
-    boton2.pack()
+    button2 = tk.Button(frame2, text=option2, font=("Arial", 10), borderwidth=0, relief="flat",
+                        bg="white", activebackground="lightgrey", 
+                        padx=15, pady=10,  # Padding
+                        command=lambda: select_option(2))
+    button2.pack()
 
-    # Botón de cancelar
-    boton_cancelar = tk.Button(ventana_opciones, text=cancel_title, font=("Arial", 10), command=cancelar_operacion_actual, 
-                                padx=10, pady=5, bg="red", fg="white")
-    boton_cancelar.pack(side=tk.BOTTOM, anchor=tk.SE, padx=10, pady=10)  # Esquina inferior derecha
+    # Cancel button
+    cancel_button = tk.Button(options_window, text=cancel_title, font=("Arial", 10), command=cancel_current_operation, 
+                               padx=10, pady=5, bg="red", fg="white")
+    cancel_button.pack(side=tk.BOTTOM, anchor=tk.SE, padx=10, pady=10)  # Bottom-right corner
 
-    # Mantener la ventana abierta hasta que se seleccione una opción o se cierre
-    ventana_opciones.mainloop()
+    # Keep the window open until an option is selected or the window is closed
+    options_window.mainloop()
 
-    # Retornar el resultado al finalizar
-    return resultado
-
-
+    # Return the result after completion
+    return result
 
 
 
 
-    
-#Función para crear una nueva carpeta y renombrar
-def copiar_archivos_con_nuevo_nombre(DataFrame_a_procesar, carpeta_origen, carpeta_destino, excel_error_file_doesnt_found, excel_error_file_already_proceced, excel_error_file_already_exist, excel_template_error_doesnt_found, excel_template_error_not_allowed, excel_column_status):
+
+
+
+def copy_files_with_new_names(dataframe_to_process, source_folder, destination_folder, excel_error_file_doesnt_found, excel_error_file_already_proceced, excel_error_file_already_exist, excel_template_error_doesnt_found, excel_template_error_not_allowed, excel_column_status):
     """
-    Esta función crea una carpeta nueva (si no existe), verifica que no haya archivos con los nombres nuevos (si los hay los marcará en estados). 
-    También verifica que entre los nombres nuevos no haya duplicados (también lo marcará en estados). 
-    Finalmente copia los archivos de la carpeta origen y los pega con los nuevos nombres en la carpeta destino. 
-    Todo se registra en estados y se devuelve en el df.
+    This function creates a new folder (if it doesn't exist), checks if there are files with the new names (if they exist, they will be marked with statuses). 
+    It also checks that there are no duplicates in the new names (it will also mark them with statuses). 
+    Finally, it copies the files from the source folder and pastes them with the new names in the destination folder. 
+    All actions are logged in statuses and returned in the DataFrame.
+
+    Args:
+        dataframe_to_process (pd.DataFrame): The DataFrame containing the files or folders to be processed.
+        source_folder (str): The source folder where the original files or folders are located.
+        destination_folder (str): The destination folder where the renamed files or folders will be copied.
+        excel_error_file_doesnt_found (str): Error message to indicate that a file was not found in the source.
+        excel_error_file_already_proceced (str): Error message for already processed files.
+        excel_error_file_already_exist (str): Error message for files that already exist in the destination.
+        excel_template_error_doesnt_found (str): Error message for a template file not found.
+        excel_template_error_not_allowed (str): Error message for a permission error when copying a file.
+        excel_column_status (str): The column name in the DataFrame where the status will be stored.
+
+    Returns:
+        pd.DataFrame: The updated DataFrame with a new column containing the statuses of each operation.
     """
-    # Crear la carpeta de destino si no existe
-    if not os.path.exists(carpeta_destino):
-        os.makedirs(carpeta_destino)
+    # Create the destination folder if it doesn't exist
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
 
-    # Lista para guardar los estados
-    estados = []
-    nombres_procesados = set()  # Conjunto para rastrear nombres únicos de 'Nombre nuevo completo'
+    # List to store statuses
+    statuses = []
+    processed_names = set()  # Set to track unique names for 'New full name'
 
-    # Iterar sobre el DataFrame para copiar archivos y carpetas
-    for index, row in DataFrame_a_procesar.iterrows():
-        nombre_original_completo = row.iloc[3]  # columna 4 = Archivo o carpeta de origen
-        nombre_nuevo_completo = row.iloc[4]  # columna 5 = Nombre para el archivo o carpeta de destino
+    # Iterate over the DataFrame to copy files and folders
+    for index, row in dataframe_to_process.iterrows():
+        original_full_name = row.iloc[3]  # Column 4 = Original file or folder name
+        new_full_name = row.iloc[4]  # Column 5 = New name for the file or folder in the destination
 
-        # Ruta completa del archivo o carpeta de origen
-        ruta_origen = os.path.join(carpeta_origen, nombre_original_completo)
-        # Ruta completa para el archivo o carpeta de destino (en "Nombre modificado")
-        ruta_destino = os.path.join(carpeta_destino, nombre_nuevo_completo)
+        # Full path for the source file or folder
+        source_path = os.path.join(source_folder, original_full_name)
+        # Full path for the destination file or folder (with "Modified name")
+        destination_path = os.path.join(destination_folder, new_full_name)
 
-        # Verificar si el archivo o carpeta existe en la carpeta de origen
-        if not os.path.exists(ruta_origen):
-            estados.append(excel_error_file_doesnt_found +" "+nombre_nuevo_completo)
-            continue  # No procesar si no existe en origen
+        # Check if the file or folder exists in the source folder
+        if not os.path.exists(source_path):
+            statuses.append(excel_error_file_doesnt_found + " " + new_full_name)
+            continue  # Skip if it doesn't exist in source
 
-        # Verificar si el nombre nuevo ya ha sido procesado antes (es un duplicado en el DataFrame)
-        if nombre_nuevo_completo in nombres_procesados:
-            estados.append(excel_error_file_already_proceced)
+        # Check if the new name has already been processed (duplicate in DataFrame)
+        if new_full_name in processed_names:
+            statuses.append(excel_error_file_already_proceced)
             continue
         
-        # Añadir el nombre nuevo al conjunto de nombres procesados
-        nombres_procesados.add(nombre_nuevo_completo)
+        # Add the new name to the processed set
+        processed_names.add(new_full_name)
 
-        # Comprobar si el archivo o carpeta ya existe en la carpeta de destino
-        if os.path.exists(ruta_destino):
-            # Si el archivo o carpeta ya existe, registrar el estado y continuar
-            estados.append(excel_error_file_already_exist)
+        # Check if the file or folder already exists in the destination folder
+        if os.path.exists(destination_path):
+            # If it already exists, log the status and continue
+            statuses.append(excel_error_file_already_exist)
             continue
 
-        # Intentar copiar el archivo o carpeta
+        # Try to copy the file or folder
         try:
-            if os.path.isdir(ruta_origen):
-                # Si es una carpeta, se copia toda la estructura de la carpeta
-                shutil.copytree(ruta_origen, ruta_destino)
+            if os.path.isdir(source_path):
+                # If it's a folder, copy the entire folder structure
+                shutil.copytree(source_path, destination_path)
             else:
-                # Si es un archivo, solo se copia el archivo
-                shutil.copy(ruta_origen, ruta_destino)
+                # If it's a file, only copy the file
+                shutil.copy(source_path, destination_path)
 
-            # Añadir estado 'Ok' si la copia fue exitosa
-            estados.append("Ok")
+            # Add 'Ok' status if the copy was successful
+            statuses.append("Ok")
         except FileNotFoundError:
-            # Manejar el caso de archivo no encontrado
-            estados.append(excel_template_error_doesnt_found)
+            # Handle the case where the file is not found
+            statuses.append(excel_template_error_doesnt_found)
         except PermissionError:
-            # Manejar errores de permisos
-            estados.append(excel_template_error_not_allowed)
+            # Handle permission errors
+            statuses.append(excel_template_error_not_allowed)
         except Exception as e:
-            # Manejo de errores en caso de otros problemas al copiar
-            estados.append(f"Error: {e}")
+            # Handle other errors during the copy process
+            statuses.append(f"Error: {e}")
 
-    # Añadir la lista de estados al DataFrame como una nueva columna
-    DataFrame_a_procesar[excel_column_status] = estados
+    # Add the list of statuses to the DataFrame as a new column
+    dataframe_to_process[excel_column_status] = statuses
 
-    # Devolver el DataFrame con la nueva columna
-    return DataFrame_a_procesar
-
-
+    # Return the DataFrame with the new column
+    return dataframe_to_process
 
 
-# Función de confirmación usando tkinter
-def preguntar_proceder_funcion(start_function_title, start_function_message):
+
+
+def ask_to_proceed(start_title, start_message):
     """
-    Esta función pregunta al usuario si desea continuar con el renombrado de archivos.
+    This function prompts the user with a message box asking if they wish to continue with the file renaming process.
+    
+    Args:
+        start_title (str): The title of the message box.
+        start_message (str): The message to display in the message box.
+    
+    Returns:
+        bool: Returns True if the user clicks 'Yes', indicating they want to proceed with the process, 
+              and False if the user clicks 'No', indicating they do not want to continue.
     """
-    ventana = tk.Tk()
-    ventana.withdraw()  # Ocultar la ventana principal
-    respuesta = messagebox.askyesno(start_function_title, start_function_message)
-    ventana.destroy()
-    return respuesta
+    window = tk.Tk()
+    window.withdraw()  # Hide the main window
+    response = messagebox.askyesno(start_title, start_message)
+    window.destroy()
+    return response
 
 
 
 # Función principal para renombrar archivos
-def renombrar_archivos_local(DataFrame_a_procesar, directorio, excel_error_file_doesnt_found, excel_error_file_already_proceced, excel_error_file_already_exist, excel_template_error_doesnt_found, excel_template_error_not_allowed, excel_column_status, start_function_title, start_function_message, operation_canceled_title, operation_canceled_message):
+def rename_files_locally(df_to_process, directory, error_file_not_found, error_file_already_processed, error_file_already_exists, template_error_not_found, template_error_not_allowed, column_status, proceed_title, proceed_message, cancel_title, cancel_message):
     """
-    Esta función renombra archivos localmente, utilizando la misma carpeta de origen y destino.
-    Pregunta primero si el usuario desea proceder, y si no, cancela el proceso.
+    This function renames files locally within the same source and destination directory.
+    It first asks the user if they wish to proceed. If not, the process is canceled.
+    
+    Args:
+        df_to_process (DataFrame): The DataFrame containing original and new file names.
+        directory (str): The directory where the files are located.
+        error_file_not_found (str): Message for when a file is not found in the directory.
+        error_file_already_processed (str): Message for files that were already processed.
+        error_file_already_exists (str): Message for files that already exist with the new name.
+        template_error_not_found (str): Message for template errors if file not found.
+        template_error_not_allowed (str): Message for template errors if permissions are denied.
+        column_status (str): Column name to store the processing status.
+        proceed_title (str): Title of the prompt asking to proceed.
+        proceed_message (str): Message of the prompt asking to proceed.
+        cancel_title (str): Title of the message shown if the operation is canceled.
+        cancel_message (str): Message shown if the operation is canceled.
+
+    Returns:
+        DataFrame: The updated DataFrame with the status column.
     """
-    # Preguntar al usuario si desea proceder
-    if not preguntar_proceder_funcion(start_function_title, start_function_message):
-        # Si el usuario presiona "No", muestra un mensaje y retorna sin cambios
-        mostrar_error(operation_canceled_title, operation_canceled_message)
-        exit_if_directly_executed()  # Cancelar el script
+    # Ask the user if they want to proceed
+    if not ask_to_proceed(proceed_title, proceed_message):
+        # If user clicks "No", show a cancellation message and exit
+        show_error(cancel_title, cancel_message)
+        exit_if_directly_executed()  # Cancel the script
 
-    # Lista para guardar los estados
-    estados = []
-    nombres_procesados = set()  # Conjunto para rastrear nombres únicos de 'Nombre nuevo completo'
+    # List to store the status messages
+    statuses = []
+    processed_names = set()  # Set to track unique names of 'New Complete Name'
 
-    # Iterar sobre el DataFrame para renombrar archivos y carpetas
-    for index, row in DataFrame_a_procesar.iterrows():
-        nombre_original_completo = row.iloc[3]  # columna 4 = Archivo o carpeta de origen
-        nombre_nuevo_completo = row.iloc[4]  # columna 5 = Nombre para el archivo o carpeta de destino
+    # Iterate over the DataFrame to rename files and directories
+    for index, row in df_to_process.iterrows():
+        original_name = row.iloc[3]  # Column 4 = Original file or directory name
+        new_name = row.iloc[4]       # Column 5 = New name for the file or directory
 
-        # Ruta completa del archivo o carpeta de origen
-        ruta_origen = os.path.join(directorio, nombre_original_completo)
-        # Ruta completa para el archivo o carpeta de destino (en "Nombre modificado")
-        ruta_destino = os.path.join(directorio, nombre_nuevo_completo)
+        # Full path of the original file or directory
+        original_path = os.path.join(directory, original_name)
+        # Full path for the new file or directory (in "Modified Name")
+        new_path = os.path.join(directory, new_name)
 
-        # Verificar si el archivo o carpeta existe en la carpeta de origen
-        if not os.path.exists(ruta_origen):
-            estados.append(excel_error_file_doesnt_found)
-            continue  # No procesar si no existe en origen
+        # Check if the file or directory exists in the source directory
+        if not os.path.exists(original_path):
+            statuses.append(error_file_not_found)
+            continue  # Skip if the original file or directory doesn't exist
 
-        # Verificar si el nombre nuevo ya ha sido procesado antes (es un duplicado en el DataFrame)
-        if nombre_nuevo_completo in nombres_procesados:
-            estados.append(excel_error_file_already_proceced)
+        # Check if the new name has already been processed (duplicate in DataFrame)
+        if new_name in processed_names:
+            statuses.append(error_file_already_processed)
             continue
         
-        # Añadir el nombre nuevo al conjunto de nombres procesados
-        nombres_procesados.add(nombre_nuevo_completo)
+        # Add the new name to the processed set
+        processed_names.add(new_name)
 
-        # Comprobar si el archivo o carpeta ya existe con el nombre nuevo
-        if os.path.exists(ruta_destino):
-            # Si el archivo o carpeta ya existe, registrar el estado y continuar
-            estados.append(excel_error_file_already_exist)
+        # Check if a file or directory with the new name already exists
+        if os.path.exists(new_path):
+            # If it already exists, record the status and continue
+            statuses.append(error_file_already_exists)
             continue
 
-        # Intentar renombrar el archivo o carpeta
+        # Try renaming the file or directory
         try:
-            os.rename(ruta_origen, ruta_destino)
-            # Añadir estado 'Ok' si el renombrado fue exitoso
-            estados.append("Ok")
+            os.rename(original_path, new_path)
+            # Add 'Ok' status if renaming was successful
+            statuses.append("Ok")
         except FileNotFoundError:
-            # Manejar el caso de archivo no encontrado
-            estados.append(excel_template_error_doesnt_found)
+            statuses.append(template_error_not_found)
         except PermissionError:
-            # Manejar errores de permisos
-            estados.append(excel_template_error_not_allowed)
+            statuses.append(template_error_not_allowed)
         except Exception as e:
-            # Manejo de errores en caso de otros problemas al renombrar
-            estados.append(f"Error: {e}")
+            statuses.append(f"Error: {e}")
 
-    # Añadir la lista de estados al DataFrame como una nueva columna
-    DataFrame_a_procesar[excel_column_status] = estados
+    # Add the status list to the DataFrame as a new column
+    df_to_process[column_status] = statuses
 
-    # Devolver el DataFrame con la nueva columna
-    return DataFrame_a_procesar
+    # Return the updated DataFrame
+    return df_to_process
 
 
-# Ajusta los textos de tkinter
-def ajustar_texto(event, *args, margen):
+# MAIN MENU FUNCTIONS
+def adjust_text(event, *args, margin):
+    """
+    Adjusts the text wrapping length for given labels based on the available width minus a specified margin.
+
+    Args:
+        event: The triggering event, typically a window resize event.
+        *args: Variable number of label widgets to adjust.
+        margin (int): The margin to subtract from the label width for text wrapping.
+
+    Returns:
+        List of labels with updated wraplength configurations (optional).
+    """
+    updated_labels = []
     for label in args:
-        # Ajustar el texto al ancho disponible menos un margen
-        nuevo_wraplength = label.winfo_width() - margen
-        if nuevo_wraplength > 0:  # Asegúrate de que el nuevo wraplength sea positivo
-            label.config(wraplength=nuevo_wraplength)
+        # Adjust the text wrapping length to the available width minus the margin
+        new_wraplength = label.winfo_width() - margin
+        if new_wraplength > 0:  # Ensure the new wrap length is positive
+            label.config(wraplength=new_wraplength)
+            updated_labels.append(label)  # Store updated label
+
+    return updated_labels  # Return the list of updated labels
+
 
 
 def relative_route_to_file(path_to_folder, file):
+    """
+    Returns the relative path to a file, accounting for whether the application 
+    is running in a PyInstaller bundle or a standard script environment.
+
+    Args:
+        path_to_folder (str): The folder path where the file is located.
+        file (str): The name of the file.
+
+    Returns:
+        str: The complete relative path to the specified file.
+    """
     if hasattr(sys, '_MEIPASS'):
+        # Running as a PyInstaller bundle, use _MEIPASS to locate files
         route = os.path.join(sys._MEIPASS, path_to_folder, file)
     else:
+        # Running as a regular script, use standard relative path
         route = os.path.join(path_to_folder, file)
     
     return route
 
 
 
-
-## FUNCIONES PARA MENU PRINCIPAL
-# Función para abrir el repositorio
 def open_web_page(*links):
-    """_summary_
+    """
+    Attempts to open a list of web links in the default web browser. For each link,
+    it checks if the URL is accessible before opening it. Stops at the first successful link.
+
+    Args:
+        *links (str): One or more URLs to open.
+
+    Returns:
+        None
     """
     for link in links:
         try:
-            # Realizar una solicitud GET para seguir redirecciones
+            # Perform a GET request to check if the link is accessible
             response = requests.get(link, timeout=5)
             if response.status_code == 200:
                 webbrowser.open(link)
-                print(f"Abriendo: {link}")
-                break  # Detener el bucle si el enlace fue abierto con éxito
+                print(f"Opening: {link}")
+                break  # Stop if the link was successfully opened
             else:
-                print(f"El enlace {link} no está disponible, estado: {response.status_code}")
+                print(f"The link {link} is not available, status code: {response.status_code}")
         except requests.ConnectionError:
-            print(f"Error de conexión al verificar {link}. El enlace puede no existir.")
+            print(f"Connection error while checking {link}. The link might not exist.")
         except requests.Timeout:
-            print(f"Tiempo de espera agotado al verificar {link}.")
+            print(f"Timeout expired while checking {link}.")
         except requests.RequestException as e:
-            print(f"Error al verificar {link}: {e}")
+            print(f"Error while checking {link}: {e}")
     else:
-        print("Ningún enlace se pudo abrir.")
+        print("No links could be opened.")
 
 
+        
 
-
-
-
-
+        
+        
 class DirectExecutionExit(Exception):
-    """Excepción personalizada para manejar la salida del script sin cerrar el menú de Tkinter."""
+    """Custom exception to handle script exit without closing the Tkinter menu."""
     pass
 
 def exit_if_directly_executed():
-    """Lanza una excepción que puede ser capturada para detener el script."""
-    raise DirectExecutionExit("El script fue detenido.")
+    """
+    Raises an exception that can be caught to stop the script.
+    
+    Args:
+        None
+        
+    Returns:
+        None
+    """
+    raise DirectExecutionExit("The script was stopped.")
 
 
-## FUNCIONES PARA CORRER SCRIPTS
-def ejecutar_script_src(script, idioma):
-    """Ejecuta el script correspondiente y maneja el idioma."""
+
+
+# FUNCTIONS TO EXECUTE SCRIPTS
+def execute_script_src(script, language):
+    """
+    Executes the corresponding script and handles the language.
+
+    Arg:
+        script (str): The name of the script to execute.
+        language (str): The language parameter to be passed to the script's main function.
+
+    Returns:
+        None: This function does not return any value. It only executes the script and handles errors.
+    """
     try:
-        # Intenta importar y ejecutar el script correspondiente
+        # Attempt to import and execute the corresponding script
         module = __import__(f'src.{script}', fromlist=['main'])
-        module.main(idioma)  # Llama a la función main pasando el idioma
+        module.main(language)  # Calls the main function passing the language
 
     except DirectExecutionExit as e:
-        print(f"El script fue detenido: {e}")
+        print(f"The script was stopped: {e}")
     except ImportError as e:
-        print(f"Error al importar el script '{script}': {e}")
+        print(f"Error importing the script '{script}': {e}")
     except AttributeError as e:
-        print(f"El script '{script}' no tiene una función 'main': {e}")
+        print(f"The script '{script}' does not have a 'main' function: {e}")
     except Exception as e:
-        print(f"Ocurrió un error al ejecutar el script '{script}': {e}")
+        print(f"An error occurred while executing the script '{script}': {e}")
 
 
 
-# Funciones específicas para cada script
-def ejecutar_script0(idioma):
-    ejecutar_script_src('a_Importar_archivos_a_excel', idioma)
 
-def ejecutar_script1(idioma):
-    ejecutar_script_src('b_Modificar_nombres', idioma)
+# Functions to execute a specific script
+def execute_script0(language):
+    """
+    Executes the 'a_Create_excel' script with the given language.
 
-def ejecutar_script2(idioma):
-    ejecutar_script_src('c_Desbloquear_excel', idioma)
+    Arg:
+        language (str): The language to be passed to the 'a_Create_excel' script.
+
+    Returns:
+        None: This function does not return any value. It only calls the execute_script_src function.
+    """
+    execute_script_src('a_Create_excel', language)
+
+
+def execute_script1(language):
+    """
+    Executes the 'b_Modify_files' script with the given language.
+
+    Arg:
+        language (str): The language to be passed to the 'b_Modify_files' script.
+
+    Returns:
+        None: This function does not return any value. It only calls the execute_script_src function.
+    """
+    execute_script_src('b_Modify_files', language)
+
+
+
+def execute_script2(language):
+    """
+    Executes the 'c_Unlock_excel' script with the given language.
+
+    Arg:
+        language (str): The language to be passed to the 'c_Unlock_excel' script.
+
+    Returns:
+        None: This function does not return any value. It only calls the execute_script_src function.
+    """
+    execute_script_src('c_Unlock_excel', language)
 

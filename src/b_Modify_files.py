@@ -1,38 +1,46 @@
 #Importo librerias
 import os
-import sys
 import pandas as pd
 
 
-# Añadir el directorio del proyecto a sys.path para llamar functions.functions en mis scripts
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Importo funciones a usar
-from functions.functions import directorio_a_trabajar, mostrar_error, mostrar_mensaje, mostrar_opciones, desbloquear_proteccion_excel, copiar_archivos_con_nuevo_nombre, renombrar_archivos_local, cargar_traducciones, choose_language, exit_if_directly_executed
+from functions.functions import working_directory, show_error, show_message, show_options, unlock_excel_sheet, copy_files_with_new_names, rename_files_locally, load_translations, choose_language, exit_if_directly_executed
 # Importo parámetros de config
 from config.config import project_name, excel_name, files_to_avoid
 
 # Importo otros scripts
-from src.a_Importar_archivos_a_excel import main as script0_main
+from src.a_Create_excel import main as script0_main
 
 
 language = choose_language()
 
 # Declaro la funcion main para al ejecutarlo en otros scripts trasmita el parámetro language
 def main(language):
+    """
+    Modifies the names of files in the current directory based on the Excel filescreated earlier. The Excel file must have the same name as the project or executable. The function uses the provided language parameter to handle any language-specific functionality.
+    
+    This function is located in src/b_Modify_files.py
+
+    Arg:
+        language (str): The language code (e.g., 'en', 'es') passed to customize language-specific content during the file renaming process.
+
+    Returns:
+        None: This function does not return any value. It modifies the names of the files in the directory based on the Excel file data.
+    """
     # Cargar traducciones
-    traducciones = cargar_traducciones(language)
+    traducciones = load_translations(language)
 
 
-    # Declaro textos de locales (cargar_traducciones) _1
+    # Declaro textos de locales (load_translations) _1
     renamed = traducciones["renamed"]
 
     # Obtener carpeta destino
     folder_with_renamed_files = project_name + " - " + renamed    
     # Aseguro estar en el directorio correcto
-    directorio = directorio_a_trabajar()
+    directorio = working_directory()
 
 
-    # Declaro textos de locales (cargar_traducciones) _2 _Final
+    # Declaro textos de locales (load_translations) _2 _Final
     select_an_option_text = traducciones["select_an_option_text"]
     error_open_file = traducciones["error_open_file"].format(excel_name=excel_name)
     excel_column_original_name = traducciones['excel_column_original_name']
@@ -89,7 +97,7 @@ def main(language):
     # Verifica si el archivo Excel existe
     if not os.path.exists(excel_save_route):
         # Muestra un mensaje de error si el archivo no existe
-        mostrar_error(error_text, error_excel_not_found)
+        show_error(error_text, error_excel_not_found)
 
         # Corre el script src/0 Importar archivos a excel.py
         script0_main(language)
@@ -103,14 +111,14 @@ def main(language):
             df = pd.read_excel(excel_save_route, usecols=[0, 1, 2])
         except PermissionError:
             # Si el archivo está abierto o en uso, se muestra un mensaje de error y corto la ejecución
-            mostrar_error(error_text, error_open_file)
+            show_error(error_text, error_open_file)
             exit_if_directly_executed()
             
         
         # Si la columna 'A' esta vacia, desbloqueamos el excel y mostramos error:
         if df.iloc[:, 0].isnull().all():
-            desbloquear_proteccion_excel(excel_save_route)
-            mostrar_error(error_text, error_excel_structure_modified)
+            unlock_excel_sheet(excel_save_route)
+            show_error(error_text, error_excel_structure_modified)
             # Corto la ejecución
             exit_if_directly_executed()
         
@@ -158,7 +166,7 @@ def main(language):
         
         # Verifico si hay nombres para modificar. Si no hay, muestró mensaje de error y cierro el programa.
         if df.iloc[:, 2].isnull().all() or (df.iloc[:, 2] == "").all():
-            mostrar_error(error_text, excel_error_column_new_names_empty)
+            show_error(error_text, excel_error_column_new_names_empty)
             exit_if_directly_executed()
 
     
@@ -167,7 +175,7 @@ def main(language):
 
     ## MÉTODOS PARA MODIFICAR NOMBRES  
     # Pregunta método
-    nro_opcion = mostrar_opciones(select_an_option_text, option1, option2, border1, border2, cancel_title)
+    nro_opcion = show_options(select_an_option_text, option1, option2, border1, border2, cancel_title)
 
     # Verificando nro_opcion
     # print(f'Se escogió la opción {nro_opcion}')
@@ -185,18 +193,18 @@ def main(language):
         #Crea la carpeta y copia los archivos con nuevo nombre:
         ruta_carpeta_destino = os.path.join(directorio, folder_with_renamed_files)
         # Correr metodo
-        copiar_archivos_con_nuevo_nombre(df,directorio,ruta_carpeta_destino, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_new_directory, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status)
+        copy_files_with_new_names(df,directorio,ruta_carpeta_destino, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_new_directory, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status)
     #Si se da la opción 2, usaré el mismo metodo copiandolo en la misma carpeta
     elif nro_opcion == 2:
         # Correr metodo sobre la misma carpeta
-        df = renombrar_archivos_local(df, directorio, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_the_same_folder, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status, start_function_title, start_function_message, operation_canceled_title, operation_canceled_message)
-        folder_with_renamed_files = directorio_a_trabajar()
+        df = rename_files_locally(df, directorio, excel_error_file_not_found, excel_error_file_already_proceced, excel_error_file_already_exist_in_the_same_folder, excel_template_error_not_found, excel_template_error_not_allowed, excel_column_status, start_function_title, start_function_message, operation_canceled_title, operation_canceled_message)
+        folder_with_renamed_files = working_directory()
         
         
     
     # Otra opcion marcará error y saldrá del programa
     else:
-        mostrar_error(error_text, error_unknown)
+        show_error(error_text, error_unknown)
         exit_if_directly_executed()
         
 
@@ -209,7 +217,7 @@ def main(language):
 
     #Si el len(df_error) = 0, mostrar mensaje de éxito y salir.
     if len(df_error)==0:
-        mostrar_mensaje(success_title, success_message)
+        show_message(success_title, success_message)
         exit_if_directly_executed()
         
     #Si len(df_error) != 0 Entonces crear excel con log de excel_column_error
@@ -239,8 +247,8 @@ def main(language):
         # Si el filtro y df tiene la misma cantidad de filas => La columna 'A' tiene nombres que no corresponden a los archivos de la carpeta:
         if len(filtro) == len(df):
             # Si se da la condición marco error
-            desbloquear_proteccion_excel(excel_save_route)
-            mostrar_error(error_text, excel_error_files_not_found + error_excel_structure_modified)
+            unlock_excel_sheet(excel_save_route)
+            show_error(error_text, excel_error_files_not_found + error_excel_structure_modified)
             # Finalizar la ejecución
             exit_if_directly_executed()
 
@@ -252,7 +260,7 @@ def main(language):
         # Guardar el archivo en la ruta final
         df_error.to_excel(ruta_completa, index=False)
 
-        mostrar_error(error_text, excel_errors_log_message + f'{excel_error_log} - {contador}{extention}')
+        show_error(error_text, excel_errors_log_message + f'{excel_error_log} - {contador}{extention}')
         # Finalizar la ejecución
         exit_if_directly_executed()
 

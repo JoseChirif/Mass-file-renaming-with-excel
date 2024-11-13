@@ -1,4 +1,4 @@
-# Entorno virtual
+# Virtual enviroment
 venv/
 # Python cache
 functions/__pycache__/
@@ -7,25 +7,19 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Archivos de instalación
+# .exe files
 dist/
 build/
 *.spec
 
-# Archivos del editor
+# Editor files
 .vscode/
 .idea/
-# Llaves o archivos sensibles
-#*.env
 
-# otros
-**lista_funciones.py
-anotaciones.txt
-test.py
-test2.py
-mensaje_git_update.txt
-icon/Link_repositorio.jpg
+# Test
 test
-estructura_proyecto.py
 
-Imagenes manual
+# others
+material soporte
+setup.py
+*setup
