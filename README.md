@@ -18,6 +18,13 @@ Generate an automatic excel template with the name of all files in the same fold
 
 <br>
 
+# Table of contents
+- [Setup](#%EF%B8%8F-setup)
+- [Languages-instructions](#-languages-instructions)
+- [Instructions](#-instructions)
+- [Documentation and colaboration](#%EF%B8%8F-documentation-and-collaboration)
+- [author](#%EF%B8%8F-author)
+<br><br>
 
 # 🛠️ SETUP
 
@@ -232,6 +239,10 @@ Generate an automatic excel template with the name of all files in the same fold
 
 **WELL DONE, files has been renamed successfully!**
 
+
+# 🗃️ Documentation and collaboration
+**📚 For detailed documentation and collaboration guidelines, please visit the [Wiki!](https://github.com/JoseChirif/Mass-file-renaming-with-excel/wiki) <br>**
+The [Wiki](https://github.com/JoseChirif/Mass-file-renaming-with-excel/wiki) contains everything you need to get started and contribute effectively. Your support and collaboration are greatly appreciated! 🚀✨
 
 
 # ✍️ Author
