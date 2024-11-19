@@ -293,7 +293,7 @@ def main_menu():
 
         This function is located in src/main_menu.py
 
-        Arg:
+        Args:
             None
 
         Returns:

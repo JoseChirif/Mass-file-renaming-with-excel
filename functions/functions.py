@@ -805,7 +805,7 @@ def execute_script_src(script, language):
     """
     Executes the corresponding script and handles the language.
 
-    Arg:
+    Args:
         script (str): The name of the script to execute.
         language (str): The language parameter to be passed to the script's main function.
 
@@ -834,7 +834,7 @@ def execute_script0(language):
     """
     Executes the 'a_Create_excel' script with the given language.
 
-    Arg:
+    Args:
         language (str): The language to be passed to the 'a_Create_excel' script.
 
     Returns:
@@ -847,7 +847,7 @@ def execute_script1(language):
     """
     Executes the 'b_Modify_files' script with the given language.
 
-    Arg:
+    Args:
         language (str): The language to be passed to the 'b_Modify_files' script.
 
     Returns:
@@ -861,7 +861,7 @@ def execute_script2(language):
     """
     Executes the 'c_Unlock_excel' script with the given language.
 
-    Arg:
+    Args:
         language (str): The language to be passed to the 'c_Unlock_excel' script.
 
     Returns:
