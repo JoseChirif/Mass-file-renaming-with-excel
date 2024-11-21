@@ -100,7 +100,7 @@ Generate an automatic excel template with the name of all files in the same fold
   <br>
 
   <ol>
-    <li>Run: <pre><code>build_exe.py</code></pre>
+    <li>Run: <pre><code>python build_exe.py</code></pre>
       or Run: <pre><code>pyinstaller --onefile --windowed --clean --noupx `
   --add-data "assets/*;assets" `
   --add-data "config/*;config" `
