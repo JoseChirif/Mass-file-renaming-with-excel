@@ -19,12 +19,21 @@ Generate an automatic excel template with the name of all files in the same fold
 <br>
 
 # Table of contents
+- [Video instructions (setup + execution)](#%EF%B8%8F-video-instructions-setup--execution)
 - [Setup](#%EF%B8%8F-setup)
 - [Languages-instructions](#-languages-instructions)
 - [Instructions](#-instructions)
 - [Documentation and colaboration](#%EF%B8%8F-documentation-and-collaboration)
 - [author](#%EF%B8%8F-author)
 <br><br>
+
+
+# ▶️ Video instructions (setup + execution)
+
+Check the instruction guide on **[this link to YouTube 🎬](https://youtu.be/hHnTrZ9BQAs)**. <br>
+It covers the **🛠️ setup** and **📑 execution**, which can be found below in this README.
+<br><br>
+
 
 # 🛠️ SETUP
 
