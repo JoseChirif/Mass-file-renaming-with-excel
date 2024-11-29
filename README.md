@@ -24,13 +24,13 @@ Generate an automatic excel template with the name of all files in the same fold
 - [Languages-instructions](#-languages-instructions)
 - [Instructions](#-instructions)
 - [Documentation and colaboration](#%EF%B8%8F-documentation-and-collaboration)
-- [author](#%EF%B8%8F-author)
+- [Author](#%EF%B8%8F-author)
 <br><br>
 
 
 # ▶️ Video instructions (setup + execution)
 
-Check the instruction guide on **[this link to YouTube 🎬](https://youtu.be/hHnTrZ9BQAs)**. <br>
+Check the instruction guide on **[this link to YouTube 🎬](https://youtu.be/Ouuhoy1KAoY)**. <br>
 It covers the **🛠️ setup** and **📑 execution**, which can be found below in this README.
 <br><br>
 
