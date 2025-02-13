@@ -19,7 +19,7 @@ Generate an automatic excel template with the name of all files in the same fold
 <br>
 
 # Table of contents
-- [Video instructions (setup + execution)](#%EF%B8%8F-video-instructions-setup--execution)
+- [Video instructions](#%EF%B8%8F-video-instructions-setup--execution)
 - [Setup](#%EF%B8%8F-setup)
 - [Languages-instructions](#-languages-instructions)
 - [Instructions](#-instructions)
@@ -29,7 +29,7 @@ Generate an automatic excel template with the name of all files in the same fold
 <br><br>
 
 
-# ▶️ Video instructions (setup + execution)
+# ▶️ Video instructions
 
 Check the instruction guide on YouTube 🎬:
 - **[English](https://youtu.be/rBNrmsQ4fyY?si=wv__NWci72Ke8G9l&t=63)**.
