@@ -24,14 +24,19 @@ Generate an automatic excel template with the name of all files in the same fold
 - [Languages-instructions](#-languages-instructions)
 - [Instructions](#-instructions)
 - [Documentation and colaboration](#%EF%B8%8F-documentation-and-collaboration)
+- [Thanks](#thanks-)
 - [Author](#%EF%B8%8F-author)
 <br><br>
 
 
 # ▶️ Video instructions (setup + execution)
 
-Check the instruction guide on **[this link to YouTube 🎬](https://youtu.be/Ouuhoy1KAoY)**. <br>
-It covers the **🛠️ setup** and **📑 execution**, which can be found below in this README.
+Check the instruction guide on YouTube 🎬:
+- **[English](https://youtu.be/rBNrmsQ4fyY?si=wv__NWci72Ke8G9l&t=63)**.
+- **[Español](https://youtu.be/_Wgyd-unk2c?si=m4rJ2b2gfxsuI9q5&t=62)**. 
+
+<br>
+It covers the **📑 execution**, which can be found below in this README.
 <br><br>
 
 
@@ -50,8 +55,8 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
     <li>Download the last release.rar
       <table>
         <tr>
-        <td><img src="https://github.com/user-attachments/assets/b34da49e-b074-4c95-a122-f77645adba06" alt="go to release section" loading="lazy"/></td>
-        <td><img src="https://github.com/user-attachments/assets/6f47e0fd-77bd-46be-b62e-c9e666084d09" alt="download the last rar file" loading="lazy"/></td>
+        <td><img src="https://github.com/user-attachments/assets/7beb6303-cdca-432b-9ffd-0bb4ac70c0b3" loading="lazy"/></td>
+        <td><img src="https://github.com/user-attachments/assets/4944850f-5813-4b2b-8070-185721ad348d" loading="lazy"/></td>
         </tr>
       </table>
     </li>
@@ -90,7 +95,12 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
 <ol>
  <li> Install virtual environment with command <pre><code>python -m venv venv</code></pre> </li>
 
-<li> Activate the virtual environment with <pre><code>venv\Scripts\activate</code></pre> </li>
+<li> Activate the virtual environment:
+  <ol> On <strong>Windows</strong>
+  <pre><code>venv\Scripts\activate</code></pre></ol> 
+  <ol> On <strong>Mac/Linux</strong>
+  <pre><code>source venv/bin/activate</code></pre></ol> 
+</li>
 
 <li> Install dependencies from requirements.txt: <pre><code>pip install -r requirements.txt</code></pre>  (check that your venv is active). </li>
 
@@ -117,7 +127,7 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
   --add-data "instructions/*;instructions" `
   --add-data "locales/*;locales" `
   --add-data "src/*;src" `
-  --add-data "LICENSE.txt;." `
+  --add-data "LICENSE;." `
   --add-data "README.md;." `
   --add-data "instructions/styles/styles.css;instructions/styles" `
   --add-data "instructions/pictures/1 - Move to folder.png;instructions/pictures" `
@@ -132,7 +142,7 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
     </li><br>
 
   <li>Then a "dist" folder will be created in the project's directory, containing a "0 rename.exe" folder. Inside it, you will find the .exe file and the "_internal" folder.
-    <img src="https://github.com/user-attachments/assets/5ed0fc2a-7e48-49bd-a0b9-f7b8a4ea2181" alt="dist folder with dependecies" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/06193611-8f98-4721-812a-641d40ff30a8" alt="dist folder" loading="lazy">
   </li>
 
   </ol>
@@ -158,7 +168,7 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
   --add-data "instructions/*;instructions" `
   --add-data "locales/*;locales" `
   --add-data "src/*;src" `
-  --add-data "LICENSE.txt;." `
+  --add-data "LICENSE;." `
   --add-data "README.md;." `
   --add-data "instructions/styles/styles.css;instructions/styles" `
   --add-data "instructions/pictures/1 - Move to folder.png;instructions/pictures" `
@@ -172,8 +182,8 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
   "run.py"</code></pre>
     </li><br>
 
-  <li>Then the folder "dist" will be created in the project's folder. Inside is the .exe file with the folder "_internal".
-    <img src="https://github.com/user-attachments/assets/1bf41ab5-db6b-4581-afc0-1b2921df1242" alt="dist folder" loading="lazy">
+  <li>Then the folder "dist" will be created in the project's folder. Inside you´ll find other folder with the project name´s and there is the .exe file with the folder "_internal".
+    <img src="https://github.com/user-attachments/assets/b7ba0f73-ece8-4447-b1a2-9da60a013e75" alt="dist folder with dependecies" loading="lazy">
   </li>
   <li>Move and keep .exe file with the folder "_internal" together all the time. <strong>The .exe file won't work if the "_internal" folder is not in the same directory.</strong></li>
 
@@ -254,6 +264,11 @@ It covers the **🛠️ setup** and **📑 execution**, which can be found below
 The [Wiki](https://github.com/JoseChirif/Mass-file-renaming-with-excel/wiki) contains everything you need to get started and contribute effectively. Your support and collaboration are greatly appreciated! 🚀✨
 
 
+# Thanks! 👏
+✨ Thank you for checking out this project! If you found it useful, feel free to leave a ⭐ on the repository.
+
+<br>
+
 # ✍️ Author
 [@Jose Chirif](https://github.com/JoseChirif)
 
@@ -262,8 +277,18 @@ I'm an Industrial Engineer specialized in process optimization, business intelli
 [Porfolio - Network - Contact](https://linktr.ee/jchirif)
 
 
+<br>
 
+### ❤️ Support me
+If you enjoy my work and want to support me, feel free to donate through the links below. Your support means a lot!
 
-
-
+<p align="center">
+    <a href="https://buymeacoffee.com/Jchirif" target="_blank">
+        <img alt="Buy Me a Tea" src="https://img.shields.io/badge/Buy%20Me%20a%20Tea-☕-586DE0?style=for-the-badge&labelColor=586DE0">
+    </a>
+    &nbsp;    &nbsp;  &nbsp;  
+    <a href="https://paypal.me/JChirif" target="_blank">
+        <img alt="Paypal" src="https://img.shields.io/badge/Donate%20via%20PayPal-❤️-FF9900?style=for-the-badge&logo=paypal&labelColor=FF9900">
+    </a>
+</p>
 

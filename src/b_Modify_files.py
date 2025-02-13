@@ -2,6 +2,9 @@
 import os
 import pandas as pd
 
+# go to the parent directory if you are running this script directly (uncomment the following lines)
+# import sys
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import functions
 from functions.functions import working_directory, show_error, show_message, show_options, unlock_excel_sheet, copy_files_with_new_names, rename_files_locally, load_translations, choose_language, exit_if_directly_executed

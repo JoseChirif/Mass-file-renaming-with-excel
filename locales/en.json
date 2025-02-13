@@ -70,7 +70,7 @@
 
     "_JSON_COMMENT7_": "__ERROR MESSAGES (TKINTER)__",
     "error_open_file": "Close '{excel_name}' to save a new one.",
-    "error_excel_not_found": "The excel '{excel_name}' hasnnot been found in the folder.  \n \n The file will be created in the folder.",
+    "error_excel_not_found": "The excel '{excel_name}' has not been found in the folder.  \n \n The file will be created in the folder.",
     "error_excel_structure_modified": "The structure should start as provided in the template from cell 'A1', 'B1' and 'C1', with the headers: '{excel_column_original_name}', '{excel_column_extention}' and '{excel_column_new_name}' respectively. \n \n Sheet protection has been disabled in excel.",
     "error_excel_open": "Close {excel_name} to be able to remove the sheet protection.",
     "error_unknown": "Unknown error.",

@@ -3,7 +3,9 @@
 import os
 from openpyxl import load_workbook
 
-
+# go to the parent directory if you are running this script directly (uncomment the following lines)
+# import sys
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import functions
 from functions.functions import working_directory, show_error, show_message, load_translations,choose_language, exit_if_directly_executed

@@ -18,7 +18,7 @@ def build_exe():
         "--add-data", "instructions/*;instructions",
         "--add-data", "locales/*;locales",
         "--add-data", "src/*;src",
-        "--add-data", "LICENSE.txt;.",
+        "--add-data", "LICENSE;.",
         "--add-data", "README.md;.",
         
         # Adding specific files

@@ -6,6 +6,8 @@ import os
 import subprocess
 from PIL import Image, ImageTk
 
+# go to the parent directory if you are running this script directly (uncomment the following lines)
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from functions.functions import open_web_page, load_available_languages, load_translations,  get_instructions, adjust_text, execute_script0, execute_script1, execute_script2
 
@@ -285,22 +287,19 @@ def main_menu():
         Returns:
             str: The absolute path to LICENSE.txt, allowing other parts of the application to access the license file regardless of the current working directory.
         """
-        return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'LICENSE.txt'))
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'LICENSE'))
         
     def open_license():
         """
-        Opens the LICENSE.txt file in the default text editor (Notepad on Windows) for viewing.
-
-        This function is located in src/main_menu.py
-
-        Args:
-            None
-
-        Returns:
-            None: This function does not return any value. It opens the license file in a new Notepad window if the file exists at the specified path.
+        Opens the LICENSE file in Notepad, regardless of its extension.
         """
         license_path = get_license_route()
-        subprocess.Popen(['notepad.exe', license_path])
+        try:
+            subprocess.run(["notepad", license_path], check=True)
+        except FileNotFoundError:
+            print("Notepad not found. Please ensure it is installed.")
+        except Exception as e:
+            print(f"An error occurred while trying to open the license file: {e}")
 
 
     # Show "MIT License" 
