@@ -19,7 +19,7 @@ Generate an automatic excel template with the name of all files in the same fold
 <br>
 
 # Table of contents
-- [Video instructions](#%EF%B8%8F-video-instructions-setup--execution)
+- [Video instructions](#%EF%B8%8F-video-instructions)
 - [Setup](#%EF%B8%8F-setup)
 - [Languages-instructions](#-languages-instructions)
 - [Instructions](#-instructions)
